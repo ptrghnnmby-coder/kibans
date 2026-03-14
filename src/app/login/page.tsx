@@ -30,7 +30,7 @@ export default function LoginPage() {
                 }} />
 
                 <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                    <h1 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 8px 0', color: 'var(--text)' }}>MartaBot</h1>
+                    <h1 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 8px 0', color: 'var(--text)' }}>Tess</h1>
                     <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>Versión de Demostración</p>
                 </div>
 

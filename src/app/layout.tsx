@@ -15,13 +15,13 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-    title: 'MartaBot 2.0 - Sistema de Gestión Comercial',
+    title: 'Tess 2.0 - Sistema de Gestión Comercial',
     description: 'Gestión de contactos, proformas y operaciones de comercio exterior',
     manifest: '/manifest.json',
     appleWebApp: {
         capable: true,
         statusBarStyle: 'black-translucent',
-        title: 'MartaBot',
+        title: 'Tess',
         startupImage: '/apple-touch-icon.png',
     },
     icons: {

@@ -175,7 +175,7 @@ export default function ConfiguracionPage() {
         <div className="animate-in" style={{ maxWidth: isMobile ? '100%' : '900px', margin: '0 auto', paddingBottom: '100px' }}>
             <div style={{ marginBottom: isMobile ? 'var(--space-4)' : 'var(--space-8)' }}>
                 <h1 className="page-title">Configuración</h1>
-                {!isMobile && <p className="page-subtitle">Gestiona tu perfil, seguridad y preferencias en MartaBot.</p>}
+                {!isMobile && <p className="page-subtitle">Gestiona tu perfil, seguridad y preferencias en Tess.</p>}
             </div>
 
             {/* Mobile: horizontal scrollable tab pills */}
@@ -352,7 +352,7 @@ export default function ConfiguracionPage() {
                                         placeholder="Tu nombre o apodo"
                                     />
                                 </div>
-                                <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Este nombre será usado por MartaBot y en tu dashboard.</p>
+                                <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Este nombre será usado por Tess y en tu dashboard.</p>
                             </div>
 
                             {/* Theme Selector moved here inside Profil tab */}
@@ -593,7 +593,7 @@ South Marine Trading"
                             </h2>
 
                             <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: 'var(--space-6)' }}>
-                                Tu feedback nos ayuda a mejorar MartaBot. Cuéntanos qué podemos mejorar o si encontraste algún error.
+                                Tu feedback nos ayuda a mejorar Tess. Cuéntanos qué podemos mejorar o si encontraste algún error.
                             </p>
 
                             <div className="input-group">

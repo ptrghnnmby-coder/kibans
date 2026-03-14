@@ -28,7 +28,7 @@ export function UserAvatar({ email, size = 32, variant = 'solid', style = {}, sh
                 background: variant === 'outlined' ? 'transparent' : 'var(--surface-raised)',
                 ...style
             }}>
-                <img src="/martabot.png" alt="Marta" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/tess_bot.png" alt="Tess" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
         )
     }

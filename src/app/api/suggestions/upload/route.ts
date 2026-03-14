@@ -17,10 +17,10 @@ export async function POST(request: Request) {
 
         // 1. Get or create a "Bot Feedback Screenshots" folder
         // For simplicity, we'll just upload to the root or a known folder if specified
-        // Let's try to find/create a "MartaBot Feedback" folder
+        // Let's try to find/create a "Tess Feedback" folder
         let folderId = ''
         const folderSearch = await drive.files.list({
-            q: "name = 'MartaBot Feedback' and mimeType = 'application/vnd.google-apps.folder' and trashed = false",
+            q: "name = 'Tess Feedback' and mimeType = 'application/vnd.google-apps.folder' and trashed = false",
             fields: 'files(id)'
         })
 
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
             folderId = folderSearch.data.files[0].id!
         } else {
             const folderMetadata = {
-                name: 'MartaBot Feedback',
+                name: 'Tess Feedback',
                 mimeType: 'application/vnd.google-apps.folder'
             }
             const folder = await drive.files.create({

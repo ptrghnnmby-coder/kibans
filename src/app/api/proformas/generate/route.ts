@@ -180,7 +180,7 @@ export async function POST(request: Request) {
         } else if (error.message.includes('404') || error.message.includes('not found')) {
             friendlyMessage = "Error de Google Drive: No se encontró la carpeta o el documento base."
         } else if (error.message.includes('Permissions') || error.message.includes('403')) {
-            friendlyMessage = "Error de permisos: MartaBot no tiene permiso para crear archivos en esa carpeta de Drive."
+            friendlyMessage = "Error de permisos: Tess no tiene permiso para crear archivos en esa carpeta de Drive."
         }
 
         return NextResponse.json({

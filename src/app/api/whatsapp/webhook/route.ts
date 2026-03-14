@@ -359,7 +359,7 @@ export async function POST(req: Request) {
 
         if (!userEmail) {
             console.log(`Unauthorized WhatsApp attempt from: ${normalizedPhone}`)
-            return sendWhatsAppResponse("Lo siento, tu número no está autorizado en MartaBot SMT. Por favor verificá tu registro.")
+            return sendWhatsAppResponse("Lo siento, tu número no está autorizado en Tess SMT. Por favor verificá tu registro.")
         }
 
         const openai = getOpenAIClient()

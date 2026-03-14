@@ -232,7 +232,7 @@ export default function ChatPage() {
                     color: 'var(--accent)',
                     border: '1px solid var(--border)'
                 }}>
-                    <img src="/martabot.png" alt="Marta" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                    <img src="/tess_bot.png" alt="Tess" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
                 <div>
                     <h1 style={{ fontSize: 'var(--font-size-xl)', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.5px' }}>Marta</h1>

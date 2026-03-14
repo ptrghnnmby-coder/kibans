@@ -113,7 +113,7 @@ function getLocationContext(pathname: string): string {
     }
 
     // Default
-    return "El usuario está navegando en MartaBot."
+    return "El usuario está navegando en Tess."
 }
 
 
@@ -506,7 +506,7 @@ Tus respuestas son claras y entregan información detallada, pero sin vueltas in
 - Si alguien te pregunta por un precio, usá el historial para dar una respuesta certera.
 
 --- CONOCIMIENTO DE NAVEGACIÓN ---
-Sabés perfectamente cómo funciona la aplicación MartaBot y dónde encontrar cada cosa:
+Sabés perfectamente cómo funciona la aplicación Tess y dónde encontrar cada cosa:
 
 **UBICACIÓN ACTUAL DEL USUARIO:**
 ${locationContext}

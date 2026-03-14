@@ -218,7 +218,7 @@ export function ChatSidebar() {
                 style={{ background: 'var(--accent)', border: 'none', padding: 0 }}
             >
                 <div className="chat-avatar-small">
-                    <img src="/martabot.png" alt="Marta Bot" />
+                    <img src="/tess_bot.png" alt="Tess" />
                 </div>
             </button>
         )
@@ -229,7 +229,7 @@ export function ChatSidebar() {
             <div className="chat-header">
                 <div className="chat-title-area">
                     <div className="chat-avatar">
-                        <img src="/martabot.png" alt="Marta Bot" />
+                        <img src="/tess_bot.png" alt="Tess" />
                         <div className="status-dot"></div>
                     </div>
                     <div>

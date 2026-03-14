@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth'
 
 // Mock verification logic for human eyes (to be run or verified mentally/via logs)
 async function testSecurity() {
-    console.log('--- MartaBot Security Verification ---');
+    console.log('--- Tess Security Verification ---');
 
     const testCases = [
         {

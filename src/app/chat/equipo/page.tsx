@@ -77,7 +77,7 @@ export default function ChatComponent() {
     const colleagues = isDemo ? fakeColleagues : realColleagues;
 
     const directContacts = [
-        { id: 'marta@bot', name: 'Marta', role: 'Asistente SMT', isBot: true, type: 'direct', avatar: '/martabot.png', color: 'var(--accent)' },
+        { id: 'marta@bot', name: 'Marta', role: 'Asistente SMT', isBot: true, type: 'direct', avatar: '/tess_bot.png', color: 'var(--accent)' },
         ...colleagues.filter(c => c.id !== 'marta@bot')
     ]
 
