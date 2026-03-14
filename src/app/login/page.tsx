@@ -23,15 +23,15 @@ export default function LoginPage() {
                 {/* Subtle top accent line */}
                 <div style={{
                     height: '2px',
-                    background: 'linear-gradient(90deg, var(--cyan), var(--purple))',
+                    background: 'var(--accent)',
                     borderRadius: '2px',
                     marginBottom: '32px',
-                    opacity: 0.7,
+                    opacity: 0.8,
                 }} />
 
                 <div style={{ textAlign: 'center', marginBottom: '32px' }}>
                     <h1 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 8px 0', color: 'var(--text)' }}>Tess</h1>
-                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>Versión de Demostración</p>
+                    <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0 }}>Powered by Kibans</p>
                 </div>
 
                 <button
@@ -44,16 +44,16 @@ export default function LoginPage() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: '12px',
-                        background: 'linear-gradient(135deg, var(--cyan), var(--purple))',
-                        color: '#fff',
+                        background: 'var(--accent)',
+                        color: '#000',
                         border: 'none',
                         borderRadius: 'var(--radius-md)',
                         fontFamily: 'inherit',
                         fontSize: '16px',
-                        fontWeight: 600,
+                        fontWeight: 700,
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
-                        boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+                        boxShadow: '0 8px 16px rgba(220, 166, 75, 0.2)',
                     }}
                     onMouseEnter={e => {
                         (e.currentTarget as HTMLButtonElement).style.filter = 'brightness(1.1)';

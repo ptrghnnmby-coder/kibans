@@ -112,7 +112,7 @@ export function Sidebar() {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: 'white'
+                            color: '#000'
                         }}>
                             <Ship size={20} strokeWidth={2.5} />
                         </div>
@@ -121,15 +121,15 @@ export function Sidebar() {
                                 fontSize: '14px',
                                 fontWeight: 800,
                                 letterSpacing: '0.5px',
-                                color: 'white',
+                                color: 'var(--accent)',
                                 lineHeight: 1.1
-                            }}>{activeUserEmail === 'demo@southmarinetrading.com' ? 'DEMO' : 'SOUTHMARINE'}</span>
+                            }}>{activeUserEmail === 'demo@southmarinetrading.com' ? 'TESS' : 'KIBANS'}</span>
                             <span style={{
                                 fontSize: '10px',
                                 fontWeight: 500,
                                 color: 'var(--text-muted)',
                                 letterSpacing: '1px'
-                            }}>{activeUserEmail === 'demo@southmarinetrading.com' ? 'MODE' : 'TRADING'}</span>
+                            }}>{activeUserEmail === 'demo@southmarinetrading.com' ? 'DEMO' : 'AI'}</span>
                         </div>
                     </div>
                 </div>

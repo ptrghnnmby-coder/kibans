@@ -95,13 +95,13 @@ export function ShipTrackingTimeline({
                         width: '40px', 
                         height: '40px', 
                         borderRadius: '12px', 
-                        background: 'rgba(56, 189, 248, 0.1)',
+                        background: 'rgba(220, 166, 75, 0.1)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        border: '1px solid rgba(56, 189, 248, 0.2)'
+                        border: '1px solid rgba(220, 166, 75, 0.2)'
                     }}>
-                        <Ship size={20} color="#38bdf8" />
+                        <Ship size={20} color="#dca64b" />
                     </div>
                     <div>
                         <h3 style={{ fontSize: '16px', fontWeight: 800, margin: 0, letterSpacing: '-0.02em' }}>Tess Tracking</h3>
@@ -143,10 +143,10 @@ export function ShipTrackingTimeline({
                     left: '40px', 
                     width: `${(currentIdx / (steps.length - 1)) * 85}%`, 
                     height: '2px', 
-                    background: 'linear-gradient(90deg, #38bdf8 0%, #818cf8 100%)',
+                    background: 'linear-gradient(90deg, #dca64b 0%, #e8bc6f 100%)',
                     zIndex: 0,
                     transition: 'width 1s ease-in-out',
-                    boxShadow: '0 0 10px rgba(56, 189, 248, 0.3)'
+                    boxShadow: '0 0 10px rgba(220, 166, 75, 0.3)'
                 }} />
 
                 {steps.map((step, idx) => {
@@ -167,15 +167,15 @@ export function ShipTrackingTimeline({
                                 width: '40px', 
                                 height: '40px', 
                                 borderRadius: '50%', 
-                                background: isCompleted ? '#38bdf8' : (isActive ? '#1e293b' : '#0f172a'),
-                                border: `2px solid ${isCompleted || isActive ? '#38bdf8' : 'rgba(255,255,255,0.1)'}`,
+                                background: isCompleted ? '#dca64b' : (isActive ? '#1e293b' : '#0f172a'),
+                                border: `2px solid ${isCompleted || isActive ? '#dca64b' : 'rgba(255,255,255,0.1)'}`,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 transition: 'all 0.3s ease',
-                                boxShadow: isActive ? '0 0 20px rgba(56, 189, 248, 0.4)' : 'none'
+                                boxShadow: isActive ? '0 0 20px rgba(220, 166, 75, 0.4)' : 'none'
                             }}>
-                                <Icon size={18} color={isCompleted ? '#0f172a' : (isActive ? '#38bdf8' : '#475569')} />
+                                <Icon size={18} color={isCompleted ? '#0f172a' : (isActive ? '#dca64b' : '#475569')} />
                             </div>
                             
                             <div style={{ marginTop: '12px', textAlign: 'center' }}>
@@ -189,7 +189,7 @@ export function ShipTrackingTimeline({
                                 </div>
                                 <div style={{ 
                                     fontSize: '9px', 
-                                    color: isActive ? '#38bdf8' : '#64748b',
+                                    color: isActive ? '#dca64b' : '#64748b',
                                     marginTop: '2px',
                                     fontWeight: 600,
                                     overflow: 'hidden',
