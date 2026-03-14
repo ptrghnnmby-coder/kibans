@@ -150,6 +150,7 @@ export function Sidebar() {
                                     <Link
                                         key={item.name}
                                         href={item.href}
+                                        id={`nav-${item.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}
                                         className={`nav-item ${isActive ? 'active' : ''}`}
                                     >
                                         <Icon size={18} />

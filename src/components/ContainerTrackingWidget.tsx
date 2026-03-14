@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Ship, MapPin, RefreshCw, Database, ExternalLink, Package, AlertTriangle, MoveRight, Clock, Anchor, ChevronUp, ChevronDown } from 'lucide-react'
 import { detectCarrier, type TrackingData, type Carrier, getCarrierTrackingURL } from '@/lib/containerTracking'
+import { ShipTrackingTimeline } from './ShipTrackingTimeline'
 
 import type { CachedTrackingRow } from '@/lib/googleSheets'
 
@@ -299,50 +300,17 @@ export function ContainerTrackingWidget({ trackingIdentifier, containerNumber, b
                     </span>
                 </div>
 
-                {/* ── VISUAL ROADMAP (DARK MODE) ── */}
-                <div style={{ padding: '40px 20px 30px', background: '#0f172a', borderBottom: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'relative', height: '60px', margin: '0 30px' }}>
-                        {/* Background Line */}
-                        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '4px', background: 'rgba(255,255,255,0.1)', transform: 'translateY(-50%)', borderRadius: '2px' }} />
-                        
-                        {/* Progress Line */}
-                        <div style={{ position: 'absolute', top: '50%', left: 0, width: `${getProgress(td.status, td.etd, td.eta)}%`, height: '4px', background: 'var(--accent)', transform: 'translateY(-50%)', borderRadius: '2px', transition: 'width 1s ease-in-out' }} />
-
-                        {/* Origin Node */}
-                        <div style={{ position: 'absolute', top: '50%', left: '0%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <div style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', border: '3px solid var(--accent)', zIndex: 2 }} />
-                            <div style={{ position: 'absolute', top: '20px', color: '#94a3b8', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', whiteSpace: 'nowrap' }}>POL</div>
-                            <div style={{ position: 'absolute', top: '34px', color: '#fff', fontSize: '12px', fontWeight: 800, whiteSpace: 'nowrap' }}>{td.portOfLoading || fallbackPol || '—'}</div>
-                        </div>
-
-                        {/* Current Location Node (Ship) */}
-                        <div style={{ position: 'absolute', top: '50%', left: `${getProgress(td.status, td.etd, td.eta)}%`, transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', transition: 'left 1s ease-in-out', zIndex: 10 }}>
-                            <div style={{ position: 'relative' }}>
-                                <div style={{ position: 'absolute', bottom: '30px', left: '50%', transform: 'translateX(-50%)', background: '#1e293b', padding: '6px 12px', borderRadius: '8px', border: '1px solid #334155', color: '#fff', fontSize: '11px', fontWeight: 700, whiteSpace: 'nowrap', boxShadow: '0 4px 12px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                        {STATUS_LABELS[td.status] || 'Posición Actual'}
-                                    </div>
-                                    <div style={{ fontSize: '10px', color: '#94a3b8', fontWeight: 600, marginTop: '3px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                                        <MapPin size={10} /> {td.currentLocation || (td.status === 'IN_TRANSIT' ? 'En Alta Mar' : '—')}
-                                    </div>
-                                    {/* Small arrow pointing down */}
-                                    <div style={{ position: 'absolute', bottom: '-5px', left: '50%', transform: 'translateX(-50%)', width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '5px solid #334155' }} />
-                                    <div style={{ position: 'absolute', bottom: '-4px', left: '50%', transform: 'translateX(-50%)', width: 0, height: 0, borderLeft: '4px solid transparent', borderRight: '4px solid transparent', borderTop: '4px solid #1e293b' }} />
-                                </div>
-                                <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(56, 189, 248, 0.4)' }}>
-                                    <Ship size={18} color="#fff" />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Destination Node */}
-                        <div style={{ position: 'absolute', top: '50%', left: '100%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <div style={{ width: 14, height: 14, borderRadius: '50%', background: td.status === 'ARRIVED' ? 'var(--accent)' : '#1e293b', border: td.status === 'ARRIVED' ? '3px solid #fff' : '3px solid rgba(255,255,255,0.2)', zIndex: 2 }} />
-                            <div style={{ position: 'absolute', top: '20px', color: '#94a3b8', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', whiteSpace: 'nowrap' }}>POD</div>
-                            <div style={{ position: 'absolute', top: '34px', color: '#fff', fontSize: '12px', fontWeight: 800, whiteSpace: 'nowrap' }}>{td.portOfDischarge || fallbackPod || '—'}</div>
-                        </div>
-                    </div>
-                </div>
+                {/* ── VISUAL ROADMAP (PREMIUM TESS STYLE) ── */}
+                <ShipTrackingTimeline 
+                    status={td.status}
+                    etd={td.etd}
+                    eta={td.eta}
+                    pol={td.portOfLoading || fallbackPol}
+                    pod={td.portOfDischarge || fallbackPod}
+                    currentLocation={td.currentLocation}
+                    vessel={td.vessel}
+                    lastUpdated={td.lastUpdated ? new Date(td.lastUpdated).toLocaleString() : undefined}
+                />
 
                 {/* ── CRONOGRAMA ── */}
                 <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border)' }}>
