@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { X, Loader2, FileText, CheckCircle, AlertTriangle, Coffee, RefreshCw, ShoppingCart, ExternalLink, Plus } from 'lucide-react';
+import DemoDocumentPreview from './DemoDocumentPreview';
 import { PAYMENT_TERMS_OPTIONS, INCOTERMS_OPTIONS } from '../lib/sheets-types';
 import { useToast } from './ui/Toast';
 import { Button } from './ui/Button';
@@ -494,12 +495,16 @@ export default function PoModal({
                         <button onClick={onClose} style={{ background: 'var(--surface-hover)', border: 'none', borderRadius: '12px', padding: '10px', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={20} /></button>
                     </div>
 
-                    <div style={{ flex: 1, position: 'relative', background: '#000' }}>
-                        <iframe
-                            src={docUrl.replace('/edit', '/preview')}
-                            style={{ width: '100%', height: '100%', border: 'none' }}
-                            title="PO Preview"
-                        />
+                    <div style={{ flex: 1, position: 'relative', background: '#000', overflow: 'hidden' }}>
+                        {docId === 'demo-po-id' || docId === 'demo-doc-id' ? (
+                            <DemoDocumentPreview type="po" operationId={operationId} />
+                        ) : (
+                            <iframe
+                                src={docUrl.replace('/edit', '/preview')}
+                                style={{ width: '100%', height: '100%', border: 'none', background: 'white' }}
+                                title="PO Preview"
+                            />
+                        )}
                         {step === 'sending' && (
                             <div style={{
                                 position: 'absolute',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Loader2, Send, FileText, CheckCircle, AlertTriangle, Coffee, RefreshCw, Download } from 'lucide-react';
+import DemoDocumentPreview from './DemoDocumentPreview';
 
 interface ProformaModalProps {
     isOpen: boolean;
@@ -255,12 +256,16 @@ export default function ProformaModal({ isOpen, onClose, operationId, clientName
                     </div>
 
                     {/* Content / Frame */}
-                    <div className="flex-1 relative bg-black/20 p-4">
-                        <iframe
-                            src={docUrl.replace('/edit', '/preview')}
-                            className="w-full h-full rounded-2xl border border-white/5 shadow-inner"
-                            title="Proforma Preview"
-                        />
+                    <div className="flex-1 relative bg-black/20 p-4 overflow-hidden rounded-2xl">
+                        {docId === 'demo-doc-id' ? (
+                            <DemoDocumentPreview type="proforma" operationId={operationId} />
+                        ) : (
+                            <iframe
+                                src={docUrl.replace('/edit', '/preview')}
+                                className="w-full h-full rounded-2xl border border-white/5 shadow-inner bg-white"
+                                title="Proforma Preview"
+                            />
+                        )}
                         {step === 'sending' && (
                             <div className="absolute inset-0 bg-gray-900/80 backdrop-blur-md flex flex-col items-center justify-center z-10 rounded-2xl">
                                 <Loader2 size={48} className="text-blue-500 animate-spin mb-4" />

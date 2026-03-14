@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { searchMasterInput, updateOperation, getCashFlowByOperation, updateCashFlowTransaction, getAllContactos, getAllProductos } from '@/lib/googleSheets'
 import { generateProformaData, OperationInput } from '@/lib/proformaEngine'
 import { createInvoiceDoc, shareFile } from '@/lib/googleDocs'
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 // id:qty:price\nid:qty:price format
 function serializeProducts(items: { id: string; qty: number; price: number }[]) {
@@ -40,6 +42,21 @@ export async function POST(request: Request) {
 
         if (!operationId || !realProducts?.length) {
             return NextResponse.json({ success: false, error: 'operationId and realProducts required' }, { status: 400 })
+        }
+
+        const session = await getServerSession(authOptions)
+        const isDemo = (session?.user as any)?.isDemo
+
+        if (isDemo) {
+            const realTotal = realProducts.reduce((s: number, p: any) => s + p.qty * p.salePrice, 0)
+            return NextResponse.json({
+                success: true,
+                docId: 'demo-invoice-id',
+                docUrl: 'https://docs.google.com/document/d/1BxiMVs0XRYNzOQmr6mJAgxXh187HdbO2ZJ38i0QxYEM/edit?usp=sharing',
+                realTotal,
+                estimatedTotal: realTotal,
+                delta: 0
+            })
         }
 
         // 1. Fetch operation

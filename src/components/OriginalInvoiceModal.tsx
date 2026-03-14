@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { X, Loader2, FileText, CheckCircle, AlertTriangle, Coffee, RefreshCw, Download, Send, Package, ArrowRight, TrendingUp, TrendingDown } from 'lucide-react'
+import DemoDocumentPreview from './DemoDocumentPreview'
 
 interface RealProduct {
     id: string
@@ -156,8 +157,12 @@ export default function OriginalInvoiceModal({
                         </div>
                         <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-xl text-gray-400 transition-colors"><X size={24} /></button>
                     </div>
-                    <div className="flex-1 relative bg-black/20 p-4">
-                        <iframe src={docUrl.replace('/edit', '/preview')} className="w-full h-full rounded-2xl border border-white/5" title="Invoice Preview" />
+                    <div className="flex-1 relative bg-black/20 p-4 overflow-hidden rounded-2xl">
+                        {docId === 'demo-invoice-id' || docId === 'demo-doc-id' ? (
+                            <DemoDocumentPreview type="invoice" operationId={operationId} />
+                        ) : (
+                            <iframe src={docUrl.replace('/edit', '/preview')} className="w-full h-full rounded-2xl border border-white/5 bg-white" title="Invoice Preview" />
+                        )}
                     </div>
                     <div className="p-5 bg-gray-800/50 border-t border-white/10 flex gap-4">
                         <button onClick={handleGenerate} className="p-4 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-2xl transition-all border border-white/5" title="Regenerar">

@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { searchMasterInput, getAllContactos, getAllProductos, getFletesByOperation, updateOperation } from '@/lib/googleSheets'
 import { createBookingDoc, shareFile } from '@/lib/googleDocs'
 import { generateBookingData } from '@/lib/bookingEngine'
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
     try {
@@ -11,6 +13,17 @@ export async function POST(request: Request, { params }: { params: { id: string 
 
         if (!forwarder) {
             return NextResponse.json({ success: false, error: 'Forwarder name is required' }, { status: 400 })
+        }
+
+        const session = await getServerSession(authOptions)
+        const isDemo = (session?.user as any)?.isDemo
+
+        if (isDemo) {
+            return NextResponse.json({
+                success: true,
+                docId: 'demo-booking-id',
+                docUrl: 'https://docs.google.com/document/d/1BxiMVs0XRYNzOQmr6mJAgxXh187HdbO2ZJ38i0QxYEM/edit?usp=sharing'
+            })
         }
 
         // 1. Fetch Details
