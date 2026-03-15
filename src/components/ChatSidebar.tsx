@@ -79,6 +79,29 @@ export function ChatSidebar() {
         }
     }, [session, userName])
 
+    // Listen for open-marta-chat event (from briefing card)
+    useEffect(() => {
+        const handleOpenChat = (e: Event) => {
+            const msg = (e as CustomEvent).detail?.message
+            setIsOpen(true)
+            if (msg) {
+                setTimeout(() => {
+                    setMessages(prev => [
+                        ...prev,
+                        {
+                            id: Date.now(),
+                            role: 'assistant' as const,
+                            content: msg,
+                            timestamp: new Date(),
+                        }
+                    ])
+                }, 150)
+            }
+        }
+        window.addEventListener('open-marta-chat', handleOpenChat)
+        return () => window.removeEventListener('open-marta-chat', handleOpenChat)
+    }, [])
+
     // Removal of localStorage sync effect
     const [input, setInput] = useState('')
     const [isLoading, setIsLoading] = useState(false)

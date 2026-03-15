@@ -1,6 +1,6 @@
 'use client'
 
-import { FileText, ShoppingCart, Ship, Eye, Edit2, Trash2, Send, Download, Loader2, Clock, CheckCircle, ExternalLink, MessageSquare, Mail } from 'lucide-react'
+import { FileText, ShoppingCart, Ship, Eye, Edit2, Trash2, Send, Download, Loader2, Clock, CheckCircle, ExternalLink, MessageSquare, Mail, Sparkles } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Operacion, Contacto, getResponsableName } from '@/lib/sheets-types'
 import DocViewerModal from './DocViewerModal'
@@ -10,6 +10,9 @@ import BookingModal from './BookingModal'
 import OriginalInvoiceModal from './OriginalInvoiceModal'
 import { useToast } from './ui/Toast'
 import { ConfirmModal } from './ui/ConfirmModal'
+import DocumentImportWizard from './DocumentImportWizard'
+import { AIFeatureBadge } from './AIFeatureBadge'
+import { useSession } from 'next-auth/react'
 
 interface OperationDocumentsTabProps {
     op: Operacion
@@ -18,6 +21,8 @@ interface OperationDocumentsTabProps {
 }
 
 export default function OperationDocumentsTab({ op, allContacts, onUpdate }: OperationDocumentsTabProps) {
+    const { data: session } = useSession()
+    const isDemo = (session?.user as any)?.isDemo
     const [selectedDocId, setSelectedDocId] = useState<string | null>(op.idDocumento || op.ocIdDocumento || op.bookingDocId || null)
     const [selectedDocTitle, setSelectedDocTitle] = useState<string>('Documento')
     const [isProformaModalOpen, setIsProformaModalOpen] = useState(false)
@@ -25,6 +30,7 @@ export default function OperationDocumentsTab({ op, allContacts, onUpdate }: Ope
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
     const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false)
     const [isViewerModalOpen, setIsViewerModalOpen] = useState(false)
+    const [isImportWizardOpen, setIsImportWizardOpen] = useState(false)
     const [opToDelete, setOpToDelete] = useState<{ type: 'PI' | 'PO' | 'Booking' | 'Invoice', docId: string } | null>(null)
     const [isDeleting, setIsDeleting] = useState(false)
     const { showToast } = useToast()
@@ -338,6 +344,21 @@ export default function OperationDocumentsTab({ op, allContacts, onUpdate }: Ope
                             >
                                 <ExternalLink size={14} style={{ marginRight: '8px' }} /> Abrir Carpeta Drive
                             </a>
+                            {/* Importar con IA */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <button
+                                    onClick={() => setIsImportWizardOpen(true)}
+                                    className="btn btn-secondary"
+                                    style={{ flex: 1, justifyContent: 'flex-start', fontSize: '12px', height: '36px', border: '1px solid rgba(220,166,75,0.3)', color: 'var(--text)' }}
+                                >
+                                    <Sparkles size={13} color="#dca64b" style={{ marginRight: '8px' }} /> Importar con IA
+                                </button>
+                                <AIFeatureBadge
+                                    title="Importar con IA"
+                                    description="GPT-4o Vision lee tu documento (invoice, BL, packing list) y extrae automáticamente todos los datos: partes, financiero, logística y productos. Después los aplica en la planilla."
+                                    position="right"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -435,6 +456,13 @@ export default function OperationDocumentsTab({ op, allContacts, onUpdate }: Ope
                 onConfirm={handleDeleteDoc}
                 onCancel={() => setOpToDelete(null)}
                 confirmText="Sí, eliminar"
+            />
+
+            <DocumentImportWizard
+                isOpen={isImportWizardOpen}
+                onClose={() => setIsImportWizardOpen(false)}
+                operationId={op.id}
+                isDemo={isDemo}
             />
         </div>
     )

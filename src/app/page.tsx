@@ -5,8 +5,9 @@ export const dynamic = 'force-dynamic'
 import { useState, useEffect } from 'react'
 import {
     Plus, Clock, DollarSign, ChevronRight, Building, User as UserIcon, Settings, Ship,
-    Anchor, Briefcase, Compass, Globe, Zap, Star, Award, Trophy, Medal, Rocket, Key, Home, Coffee, HardHat, Hammer, Wrench, Package, Box, Truck, Terminal, Code, Cpu, Mic, MapPin
+    Anchor, Briefcase, Compass, Globe, Zap, Star, Award, Trophy, Medal, Rocket, Key, Home, Coffee, HardHat, Hammer, Wrench, Package, Box, Truck, Terminal, Code, Cpu, Mic, MapPin, X, Sparkles
 } from 'lucide-react'
+import { AIFeatureBadge } from '@/components/AIFeatureBadge'
 
 const ICON_MAP: Record<string, any> = {
     User: UserIcon, Shield: Settings, Briefcase, Anchor, Ship, Compass, Globe, Zap, Star, Award, Trophy, Medal, Rocket, Key, House: Home, Coffee, HardHat, Hammer, Wrench, Package, Box, Truck, Terminal, Code, Cpu, Microphone: Mic, MapPin
@@ -30,6 +31,8 @@ export default function Dashboard() {
     const [avatarName, setAvatarName] = useState<string>('User')
     const [impersonatedEmail, setImpersonatedEmail] = useState<string | null>(null)
     const [enabledWidgets, setEnabledWidgets] = useState<string[]>(['recent_ops', 'notes', 'financial_summary', 'cashflow', 'prospects', 'agenda'])
+    const [showBriefing, setShowBriefing] = useState(false)
+    const isDemo = (session?.user as any)?.isDemo
 
     useEffect(() => {
         const loadUserData = () => {
@@ -105,6 +108,25 @@ export default function Dashboard() {
             setEnabledWidgets(JSON.parse(saved))
         }
     }, [impersonatedEmail])
+
+    // Briefing diario — aparece una vez por día
+    useEffect(() => {
+        const today = new Date().toDateString()
+        const seen = localStorage.getItem('marta_briefing_date')
+        if (seen !== today) {
+            const t = setTimeout(() => setShowBriefing(true), 2500)
+            return () => clearTimeout(t)
+        }
+    }, [])
+
+    const handleOpenChat = () => {
+        setShowBriefing(false)
+        localStorage.setItem('marta_briefing_date', new Date().toDateString())
+        const msg = isDemo
+            ? 'Buen día. Resumen del día: tenés 2 embarques en tránsito (25-0005 a Hamburgo, ETA 18/04 y 25-0010 a Yokohama, ETA 05/04). Las ops con Maersk y MSC llegaron sin novedades. Margen promedio de la semana: 14.8%.'
+            : 'Buen día. Abrí el briefing para más detalles de tu operación.'
+        window.dispatchEvent(new CustomEvent('open-marta-chat', { detail: { message: msg } }))
+    }
 
     const userEmail = session?.user?.email?.toLowerCase()
     const isAdmin = userEmail === 'hm@southmarinetrading.com' ||
@@ -317,6 +339,76 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Marta Briefing Card */}
+            {showBriefing && (
+                <div style={{
+                    position: 'fixed', bottom: '80px', right: '24px', zIndex: 9990,
+                    width: '320px',
+                    background: 'var(--surface-raised)',
+                    border: '1px solid rgba(220,166,75,0.4)',
+                    borderRadius: '16px',
+                    boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                    overflow: 'hidden',
+                    animation: 'briefingSlideIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
+                }}>
+                    {/* Header */}
+                    <div style={{
+                        background: 'linear-gradient(135deg, var(--navy-deep, #0a1628) 0%, #0d2244 100%)',
+                        padding: '14px 16px',
+                        display: 'flex', alignItems: 'center', gap: '10px',
+                        borderBottom: '1px solid rgba(220,166,75,0.2)',
+                    }}>
+                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', border: '2px solid rgba(220,166,75,0.5)', flexShrink: 0 }}>
+                            <img src="/tess_bot.png" alt="Marta" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: '12px', fontWeight: 700, color: '#fff' }}>Marta · Briefing del día</div>
+                            <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)' }}>Análisis generado por IA</div>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <AIFeatureBadge
+                                title="Briefing con IA"
+                                description="Marta analiza tus operaciones activas, márgenes y pagos pendientes para generar un resumen personalizado al inicio del día."
+                                position="left"
+                            />
+                            <button onClick={() => { setShowBriefing(false); localStorage.setItem('marta_briefing_date', new Date().toDateString()) }}
+                                style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', padding: 0, display: 'flex' }}>
+                                <X size={15} />
+                            </button>
+                        </div>
+                    </div>
+                    {/* Body */}
+                    <div style={{ padding: '16px' }}>
+                        <p style={{ margin: '0 0 14px', fontSize: '13px', lineHeight: '1.7', color: 'var(--text)' }}>
+                            {isDemo ? (
+                                <>
+                                    <strong>Buenos días.</strong> Tenés <strong>2 embarques en tránsito:</strong> HAMBURG FRUITS (25-0005) llega a Hamburgo aprox. <strong>18/04</strong>, y TOKYO FRESH (25-0010) en camino a Yokohama, ETA <strong>05/04</strong>. Las ops 25-0001 y 25-0002 llegaron sin novedades. Margen promedio de la semana: <strong style={{ color: 'var(--accent)' }}>14.8%</strong>.
+                                </>
+                            ) : (
+                                'Buenos días. Revisá el chat para el resumen ejecutivo de hoy.'
+                            )}
+                        </p>
+                        <button
+                            onClick={handleOpenChat}
+                            style={{
+                                width: '100%', padding: '10px', borderRadius: '10px',
+                                background: 'var(--accent)', border: 'none', color: '#000',
+                                fontWeight: 700, fontSize: '13px', cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
+                            }}
+                        >
+                            <Sparkles size={14} fill="#000" /> Abrir chat con Marta
+                        </button>
+                    </div>
+                    <style>{`
+                        @keyframes briefingSlideIn {
+                            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+                            to   { opacity: 1; transform: translateY(0) scale(1); }
+                        }
+                    `}</style>
                 </div>
             )}
         </div>

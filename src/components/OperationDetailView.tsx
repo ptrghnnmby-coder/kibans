@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import { AIFeatureBadge } from './AIFeatureBadge'
 import OperationDocumentsTab from './OperationDocumentsTab'
 import { Button } from './ui/Button'
 import {
@@ -12,7 +14,7 @@ import {
     Edit2,
     FileText,
     MapPin,
-    Package, // Replaced Box with Package as it seems more appropriate, or keep Box if prefered.
+    Package,
     Box,
     RefreshCw,
     Plus,
@@ -41,7 +43,8 @@ import {
     Archive,
     ExternalLink,
     Truck,
-    Factory
+    Factory,
+    Sparkles
 } from 'lucide-react'
 import { ConfirmModal } from './ui/ConfirmModal'
 import { ContainerTrackingWidget } from './ContainerTrackingWidget'
@@ -69,7 +72,14 @@ interface OperationDetailViewProps {
     allContacts: Contacto[]
 }
 
+const DEMO_ANOMALIES: Record<string, string> = {
+    '25-0005': 'El flete de esta operación ($4.200) está un 22% por encima del promedio histórico hacia Hamburgo ($3.440). Comparar con cotizaciones de Hapag-Lloyd para la próxima.',
+    '25-0010': 'El margen de esta operación (11.2%) está por debajo del promedio histórico hacia Yokohama (17.8%). Revisá precios de venta o costos de proceso.',
+}
+
 export default function OperationDetailView({ initialOp, allProducts, allContacts }: OperationDetailViewProps) {
+    const { data: session } = useSession()
+    const isDemo = (session?.user as any)?.isDemo
     const router = useRouter()
     const { showToast } = useToast()
     const [op, setOp] = useState(initialOp)
@@ -791,6 +801,32 @@ export default function OperationDetailView({ initialOp, allProducts, allContact
                         Operación Concluida
                     </span>
                     <span style={{ fontSize: '11px', color: 'var(--text-dim)' }}>— Esta operación fue liquidada y archivada.</span>
+                </div>
+            )}
+
+            {/* Marta Anomaly Insight Banner */}
+            {isDemo && DEMO_ANOMALIES[op.id || ''] && (
+                <div style={{
+                    display: 'flex', alignItems: 'flex-start', gap: '10px',
+                    padding: '12px 16px',
+                    background: 'rgba(245,158,11,0.07)',
+                    borderLeft: '3px solid #f59e0b',
+                    margin: '0 0 4px',
+                    borderRadius: '0 8px 8px 0',
+                }}>
+                    <Sparkles size={15} color="#f59e0b" fill="#f59e0b" style={{ flexShrink: 0, marginTop: '1px' }} />
+                    <div style={{ flex: 1 }}>
+                        <span style={{ fontSize: '11px', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Marta detectó un insight</span>
+                        <p style={{ margin: '2px 0 0', fontSize: '12px', color: 'var(--text)', lineHeight: '1.55' }}>
+                            {DEMO_ANOMALIES[op.id!]}
+                        </p>
+                    </div>
+                    <AIFeatureBadge
+                        title="Análisis de Anomalías"
+                        description="Marta compara el margen y flete de esta operación con operaciones históricas similares (mismo destino o exportador) para detectar desvíos significativos."
+                        position="left"
+                        size="sm"
+                    />
                 </div>
             )}
 
