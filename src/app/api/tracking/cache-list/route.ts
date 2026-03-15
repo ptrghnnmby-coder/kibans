@@ -19,24 +19,16 @@ export async function GET() {
         const isDemo = (session?.user as any)?.isDemo
 
         if (isDemo) {
-            const { MOCK_OPERACIONES } = await import('@/lib/mockData')
-            const merged = MOCK_OPERACIONES.filter(op => op.containerNumber).map(op => ({
-                opId: op.id!,
-                userId: '',
-                cliente: op.cliente || '',
-                puertoDestino: op.puertoDestino || '',
-                booking: (op as any).booking || `BKG-${op.id}`,
-                container: op.containerNumber?.trim().toUpperCase() || '',
-                etd: (op as any).fechaEmbarque || op.etd || '2025-03-01',
-                eta: (op as any).arrivalDate || op.eta || '2025-04-10',
-                status: 'IN_TRANSIT',
-                location: 'En altamar',
-                vessel: 'MSC SINFONIA',
-                voyage: '921N',
-                updatedAt: new Date().toISOString()
-            }))
-            return NextResponse.json({ success: true, data: merged })
+            const MOCK_TRACKING = [
+                { opId: '25-0001', cliente: 'GLOBAL FRUITS BV',    puertoDestino: 'ROTTERDAM',      booking: 'BK-MAERSK-001', container: 'MSKU1234567', etd: '2025-02-15', eta: '2025-03-10', status: 'ARRIVED',    location: 'Rotterdam, Netherlands', vessel: 'MAERSK STOCKHOLM', voyage: '513W', pol: 'Buenos Aires', pod: 'Rotterdam' },
+                { opId: '25-0002', cliente: 'FRESH DIRECT LLC',    puertoDestino: 'PHILADELPHIA',   booking: 'BK-MSC-099',    container: 'MEDU9876543', etd: '2025-01-20', eta: '2025-02-12', status: 'ARRIVED',    location: 'Philadelphia, USA',      vessel: 'MSC VALENTINA',   voyage: '099E', pol: 'Buenos Aires', pod: 'Philadelphia' },
+                { opId: '25-0005', cliente: 'HAMBURG FRUITS',      puertoDestino: 'HAMBURG',        booking: 'BK-HAPAG-005',  container: 'HLXU1122334', etd: '2025-03-20', eta: '2025-04-18', status: 'IN_TRANSIT', location: 'Atlántico Sur',          vessel: 'HAPAG EXPRESS',   voyage: '214N', pol: 'Buenos Aires', pod: 'Hamburg' },
+                { opId: '25-0008', cliente: 'NY GROCERS',          puertoDestino: 'NEW YORK',       booking: 'BK-HAMBURG-008',container: 'SUDU5544332', etd: '2025-02-01', eta: '2025-02-25', status: 'ARRIVED',    location: 'New York, USA',          vessel: 'HAMBURG EXPRESS', voyage: '008W', pol: 'San Antonio', pod: 'New York' },
+                { opId: '25-0010', cliente: 'TOKYO FRESH',         puertoDestino: 'YOKOHAMA',       booking: 'BK-ONE-010',    container: 'ONEU3322110', etd: '2025-03-01', eta: '2025-04-05', status: 'IN_TRANSIT', location: 'Océano Pacífico',        vessel: 'ONE OLYMPUS',     voyage: '010E', pol: 'Buenos Aires', pod: 'Yokohama' },
+            ]
+            return NextResponse.json({ success: true, data: MOCK_TRACKING.map(t => ({ ...t, userId: 'demo@southmarinetrading.com', updatedAt: new Date().toISOString() })) })
         }
+
 
         const { getTrackingCache, getAllOperations } = await import('@/lib/googleSheets')
 
