@@ -1,9 +1,12 @@
 'use client'
-import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import Image from 'next/image'
+import { Suspense } from 'react'
 
-export default function WelcomePage() {
-    const router = useRouter()
+function WelcomeContent() {
+    const searchParams = useSearchParams()
+    const lang = searchParams.get('lang') === 'en' ? 'en' : 'es'
 
     return (
         <div style={{
@@ -45,7 +48,7 @@ export default function WelcomePage() {
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                 }}>
-                    Bienvenido a Tess
+                    {lang === 'en' ? 'Welcome to Tess' : 'Bienvenido a Tess'}
                 </h1>
 
                 <p style={{ 
@@ -55,11 +58,13 @@ export default function WelcomePage() {
                     lineHeight: 1.6,
                     fontWeight: 300
                 }}>
-                    Tu nueva plataforma de eficiencia empresarial <br/> potenciada por Inteligencia Artificial.
+                    {lang === 'en'
+                        ? <>Your new AI-powered business efficiency platform.</>  
+                        : <>Tu nueva plataforma de eficiencia empresarial <br/> potenciada por Inteligencia Artificial.</>}
                 </p>
 
                 <button
-                    onClick={() => router.push('/login')}
+                    onClick={() => signIn('demo', { callbackUrl: '/' })}
                     style={{
                         padding: '18px 60px',
                         fontSize: '1.2rem',
@@ -81,7 +86,7 @@ export default function WelcomePage() {
                         e.currentTarget.style.boxShadow = '0 10px 30px rgba(220, 166, 75, 0.3)'
                     }}
                 >
-                    Entrar
+                    {lang === 'en' ? 'Enter' : 'Entrar'}
                 </button>
             </div>
 
@@ -93,5 +98,13 @@ export default function WelcomePage() {
                 body { margin: 0; background: #0a0a0b; }
             `}</style>
         </div>
+    )
+}
+
+export default function WelcomePage() {
+    return (
+        <Suspense fallback={<div style={{ background: '#0a0a0b', minHeight: '100svh' }} />}>
+            <WelcomeContent />
+        </Suspense>
     )
 }

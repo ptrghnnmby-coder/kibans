@@ -1,7 +1,12 @@
 'use client'
 import { signIn } from 'next-auth/react'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function LoginPage() {
+function LoginContent() {
+    const searchParams = useSearchParams()
+    const isEnglish = searchParams.get('lang') === 'en'
+
     return (
         <div style={{
             display: 'flex',
@@ -67,9 +72,21 @@ export default function LoginPage() {
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
                     </svg>
-                    Ingresar a la Demo
+                    {isEnglish ? 'Enter Demo' : 'Ingresar a la Demo'}
                 </button>
             </div>
         </div>
+    )
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100svh', background: 'var(--bg)' }}>
+                <div className="spinner"></div>
+            </div>
+        }>
+            <LoginContent />
+        </Suspense>
     )
 }

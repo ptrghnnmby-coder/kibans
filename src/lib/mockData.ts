@@ -412,66 +412,81 @@ export const MOCK_CONTACTOS: Contacto[] = [
 ]
 
 export const MOCK_CASHFLOW: CashFlowTransaction[] = [
-    {
-        id: 'TX-D001',
-        operationId: '25-0001',
-        date: '2025-02-10',
-        type: 'INGRESO',
-        category: 'Adelanto',
-        description: '30% Adelanto GLOBAL FRUITS',
-        amount: 8643.60,
-        status: 'PAGADO',
-        timestamp: '2025-02-10T14:35:00Z',
-        dueDate: '2025-02-10'
-    },
-    {
-        id: 'TX-D002',
-        operationId: '25-0001',
-        date: '2025-03-20',
-        type: 'INGRESO',
-        category: 'Saldo',
-        description: '70% Saldo GLOBAL FRUITS',
-        amount: 20168.40,
-        status: 'PENDIENTE',
-        timestamp: '2025-02-10T14:35:00Z',
-        dueDate: '2025-03-25'
-    },
-    {
-        id: 'TX-D003',
-        operationId: '25-0001',
-        date: '2025-02-12',
-        type: 'EGRESO',
-        category: 'Compra',
-        description: 'Pago a Productor FRUTAS DEL SOL',
-        amount: 21403.20,
-        status: 'PAGADO',
-        timestamp: '2025-02-12T09:00:00Z',
-        dueDate: '2025-02-12'
-    },
-    {
-        id: 'TX-D004',
-        operationId: '25-0001',
-        date: '2025-02-14',
-        type: 'EGRESO',
-        category: 'Flete',
-        description: 'Flete Oceanico MAERSK',
-        amount: 1850.00,
-        status: 'PENDIENTE',
-        timestamp: '2025-02-14T10:00:00Z',
-        dueDate: '2025-03-01'
-    },
-    {
-        id: 'TX-D005',
-        operationId: '25-0003',
-        date: '2025-02-11',
-        type: 'EGRESO',
-        category: 'Flete',
-        description: 'Anticipo Flete - 003-26',
-        amount: 450.00,
-        status: 'PAGADO',
-        timestamp: '2025-02-11T10:00:00Z',
-        dueDate: '2025-02-11'
-    }
+    // ─── 25-0001 · GLOBAL FRUITS BV · Manzanas Rotterdam ───
+    { id: 'TX-D001', operationId: '25-0001', date: '2025-02-10', type: 'INGRESO', category: 'Adelanto', description: '30% Adelanto - GLOBAL FRUITS BV', amount: 8643.60, status: 'PAGADO', timestamp: '2025-02-10T14:35:00Z', dueDate: '2025-02-10' },
+    { id: 'TX-D002', operationId: '25-0001', date: '2025-03-25', type: 'INGRESO', category: 'Saldo CAD', description: '70% Saldo CAD - GLOBAL FRUITS BV', amount: 20168.40, status: 'PENDIENTE', timestamp: '2025-02-10T14:35:00Z', dueDate: '2025-03-25' },
+    { id: 'TX-D003', operationId: '25-0001', date: '2025-02-12', type: 'EGRESO', category: 'Compra Productor', description: 'Pago FRUTAS DEL SOL SA - 1176 ctn Manzanas', amount: 21403.20, status: 'PAGADO', timestamp: '2025-02-12T09:00:00Z', dueDate: '2025-02-12' },
+    { id: 'TX-D004', operationId: '25-0001', date: '2025-02-18', type: 'EGRESO', category: 'Flete', description: 'Flete Oceánico MAERSK LOGISTICS', amount: 1850.00, status: 'PAGADO', timestamp: '2025-02-14T10:00:00Z', dueDate: '2025-02-18' },
+    { id: 'TX-D005', operationId: '25-0001', date: '2025-02-13', type: 'EGRESO', category: 'Despachante', description: 'Servicio Despachante Exportación', amount: 480.00, status: 'PAGADO', timestamp: '2025-02-13T11:00:00Z', dueDate: '2025-02-13' },
+    { id: 'TX-D006', operationId: '25-0001', date: '2025-02-14', type: 'EGRESO', category: 'Inspección', description: 'Inspección Fitosanitaria SENASA', amount: 210.00, status: 'PAGADO', timestamp: '2025-02-14T08:00:00Z', dueDate: '2025-02-14' },
+    { id: 'TX-D007', operationId: '25-0001', date: '2025-02-15', type: 'EGRESO', category: 'Seguro', description: 'Seguro de Carga - Allianz', amount: 320.00, status: 'PAGADO', timestamp: '2025-02-15T09:00:00Z', dueDate: '2025-02-15' },
+
+    // ─── 25-0002 · FRESH DIRECT LLC · Limones Philadelphia ───
+    { id: 'TX-D010', operationId: '25-0002', date: '2025-02-15', type: 'INGRESO', category: 'Pago Total CAD', description: '100% CAD - FRESH DIRECT LLC', amount: 31200.00, status: 'PAGADO', timestamp: '2025-01-20T10:00:00Z', dueDate: '2025-02-15' },
+    { id: 'TX-D011', operationId: '25-0002', date: '2025-01-16', type: 'EGRESO', category: 'Compra Productor', description: 'Pago CITRUS VIL SA - 1600 ctn Limones', amount: 21120.00, status: 'PAGADO', timestamp: '2025-01-16T10:00:00Z', dueDate: '2025-01-16' },
+    { id: 'TX-D012', operationId: '25-0002', date: '2025-01-19', type: 'EGRESO', category: 'Flete', description: 'Flete Oceánico MSC', amount: 2100.00, status: 'PAGADO', timestamp: '2025-01-19T10:00:00Z', dueDate: '2025-01-19' },
+    { id: 'TX-D013', operationId: '25-0002', date: '2025-01-17', type: 'EGRESO', category: 'Despachante', description: 'Servicio Despachante Exportación', amount: 520.00, status: 'PAGADO', timestamp: '2025-01-17T11:00:00Z', dueDate: '2025-01-17' },
+    { id: 'TX-D014', operationId: '25-0002', date: '2025-01-18', type: 'EGRESO', category: 'Inspección', description: 'Inspección USDA - Cold Treatment', amount: 380.00, status: 'PAGADO', timestamp: '2025-01-18T08:00:00Z', dueDate: '2025-01-18' },
+    { id: 'TX-D015', operationId: '25-0002', date: '2025-01-19', type: 'EGRESO', category: 'Seguro', description: 'Seguro de Carga CIF - Zurich', amount: 290.00, status: 'PAGADO', timestamp: '2025-01-19T09:00:00Z', dueDate: '2025-01-19' },
+
+    // ─── 25-0003 · EURO DISTRI NV · Peras Barcelona ───
+    { id: 'TX-D020', operationId: '25-0003', date: '2025-03-05', type: 'EGRESO', category: 'Despachante', description: 'Anticipo Despachante Exportación', amount: 300.00, status: 'PAGADO', timestamp: '2025-03-05T10:00:00Z', dueDate: '2025-03-05' },
+    { id: 'TX-D021', operationId: '25-0003', date: '2025-03-14', type: 'EGRESO', category: 'Inspección', description: 'Inspección Fitosanitaria SENASA', amount: 190.00, status: 'PENDIENTE', timestamp: '2025-03-10T09:00:00Z', dueDate: '2025-03-14' },
+    { id: 'TX-D022', operationId: '25-0003', date: '2025-03-25', type: 'INGRESO', category: 'Pago Total CAD', description: '100% CAD - EURO DISTRI N.V.', amount: 26460.00, status: 'PENDIENTE', timestamp: '2025-03-01T09:15:00Z', dueDate: '2025-03-25' },
+    { id: 'TX-D023', operationId: '25-0003', date: '2025-03-20', type: 'EGRESO', category: 'Compra Productor', description: 'Pago COOPERATIVA DEL SUR - 1260 ctn Peras', amount: 19530.00, status: 'PENDIENTE', timestamp: '2025-03-01T09:15:00Z', dueDate: '2025-03-20' },
+    { id: 'TX-D024', operationId: '25-0003', date: '2025-03-16', type: 'EGRESO', category: 'Flete', description: 'Flete Oceánico CFR - Evergreen', amount: 1950.00, status: 'PENDIENTE', timestamp: '2025-03-16T10:00:00Z', dueDate: '2025-03-20' },
+
+    // ─── 25-0004 · UK FRESH PRODUCE · Cerezas London ───
+    { id: 'TX-D030', operationId: '25-0004', date: '2025-03-10', type: 'INGRESO', category: 'Adelanto', description: '20% Adelanto - UK FRESH PRODUCE', amount: 9250.00, status: 'PAGADO', timestamp: '2025-03-10T14:00:00Z', dueDate: '2025-03-10' },
+    { id: 'TX-D031', operationId: '25-0004', date: '2025-04-25', type: 'INGRESO', category: 'Saldo CAD', description: '80% Saldo CAD - UK FRESH PRODUCE', amount: 37000.00, status: 'PENDIENTE', timestamp: '2025-03-05T10:00:00Z', dueDate: '2025-04-25' },
+    { id: 'TX-D032', operationId: '25-0004', date: '2025-04-10', type: 'EGRESO', category: 'Compra Productor', description: 'Pago PATAGONIA FRESH - Cerezas Bing Jumbo', amount: 34225.00, status: 'PENDIENTE', timestamp: '2025-03-05T10:00:00Z', dueDate: '2025-04-10' },
+    { id: 'TX-D033', operationId: '25-0004', date: '2025-04-12', type: 'EGRESO', category: 'Flete', description: 'Flete Oceánico CFR - MSC', amount: 1850.00, status: 'PENDIENTE', timestamp: '2025-03-05T10:00:00Z', dueDate: '2025-04-12' },
+    { id: 'TX-D034', operationId: '25-0004', date: '2025-03-15', type: 'EGRESO', category: 'Despachante', description: 'Reserva Despachante Exportación', amount: 250.00, status: 'PAGADO', timestamp: '2025-03-15T10:00:00Z', dueDate: '2025-03-15' },
+
+    // ─── 25-0005 · HAMBURG FRUITS · Mandarinas Hamburg ───
+    { id: 'TX-D040', operationId: '25-0005', date: '2025-03-12', type: 'EGRESO', category: 'Compra Productor', description: 'Pago CITRUS VIL SA - Mandarinas W. Murcott', amount: 25000.00, status: 'PAGADO', timestamp: '2025-03-12T09:00:00Z', dueDate: '2025-03-12' },
+    { id: 'TX-D041', operationId: '25-0005', date: '2025-04-05', type: 'INGRESO', category: 'Pago Total CAD', description: '100% CAD - HAMBURG FRUITS', amount: 36000.00, status: 'PENDIENTE', timestamp: '2025-03-08T11:30:00Z', dueDate: '2025-04-05' },
+    { id: 'TX-D042', operationId: '25-0005', date: '2025-03-25', type: 'EGRESO', category: 'Flete', description: 'Flete Oceánico FOB - HAPAG LLOYD', amount: 2200.00, status: 'PENDIENTE', timestamp: '2025-03-20T10:00:00Z', dueDate: '2025-03-25' },
+    { id: 'TX-D043', operationId: '25-0005', date: '2025-03-13', type: 'EGRESO', category: 'Inspección', description: 'Inspección Fitosanitaria SENASA', amount: 175.00, status: 'PAGADO', timestamp: '2025-03-13T08:00:00Z', dueDate: '2025-03-13' },
+    { id: 'TX-D044', operationId: '25-0005', date: '2025-03-14', type: 'EGRESO', category: 'Seguro', description: 'Seguro FOB - Marsh Insurance', amount: 210.00, status: 'PAGADO', timestamp: '2025-03-14T09:00:00Z', dueDate: '2025-03-14' },
+
+    // ─── 25-0006 · PARIS PRIMEURS · Arándanos Le Havre (LIQUIDADA) ───
+    { id: 'TX-D050', operationId: '25-0006', date: '2025-02-01', type: 'INGRESO', category: 'Pago Total CAD', description: '100% CAD - PARIS PRIMEURS', amount: 56448.00, status: 'PAGADO', timestamp: '2025-01-28T10:00:00Z', dueDate: '2025-02-01' },
+    { id: 'TX-D051', operationId: '25-0006', date: '2024-12-22', type: 'EGRESO', category: 'Compra Productor', description: 'Pago BERRY BEST SR - Arándanos Duke 14mm', amount: 42336.00, status: 'PAGADO', timestamp: '2024-12-22T09:00:00Z', dueDate: '2024-12-22' },
+    { id: 'TX-D052', operationId: '25-0006', date: '2025-01-03', type: 'EGRESO', category: 'Flete', description: 'Flete CIF CMA CGM', amount: 2800.00, status: 'PAGADO', timestamp: '2025-01-03T10:00:00Z', dueDate: '2025-01-03' },
+    { id: 'TX-D053', operationId: '25-0006', date: '2025-01-04', type: 'EGRESO', category: 'Seguro', description: 'Seguro de Carga CIF - AXA', amount: 380.00, status: 'PAGADO', timestamp: '2025-01-04T09:00:00Z', dueDate: '2025-01-04' },
+    { id: 'TX-D054', operationId: '25-0006', date: '2025-01-04', type: 'EGRESO', category: 'Despachante', description: 'Liquidación Final Despachante', amount: 620.00, status: 'PAGADO', timestamp: '2025-01-04T11:00:00Z', dueDate: '2025-01-04' },
+    { id: 'TX-D055', operationId: '25-0006', date: '2024-12-29', type: 'EGRESO', category: 'Inspección', description: 'Inspección Fitosanitaria + Cold Chain', amount: 290.00, status: 'PAGADO', timestamp: '2024-12-29T08:00:00Z', dueDate: '2024-12-29' },
+
+    // ─── 25-0007 · SHANGHAI IMPORTS · Uvas Shanghai ───
+    { id: 'TX-D060', operationId: '25-0007', date: '2025-03-20', type: 'INGRESO', category: 'Adelanto', description: '30% Adelanto - SHANGHAI IMPORTS', amount: 8505.00, status: 'PENDIENTE', timestamp: '2025-03-11T14:45:00Z', dueDate: '2025-03-20' },
+    { id: 'TX-D061', operationId: '25-0007', date: '2025-06-05', type: 'INGRESO', category: 'Saldo CAD', description: '70% Saldo CAD - SHANGHAI IMPORTS', amount: 19845.00, status: 'PENDIENTE', timestamp: '2025-03-11T14:45:00Z', dueDate: '2025-06-05' },
+    { id: 'TX-D062', operationId: '25-0007', date: '2025-05-15', type: 'EGRESO', category: 'Compra Productor', description: 'Pago VINE YARD SA - Uvas Red Globe XL', amount: 20160.00, status: 'PENDIENTE', timestamp: '2025-03-11T14:45:00Z', dueDate: '2025-05-15' },
+    { id: 'TX-D063', operationId: '25-0007', date: '2025-05-15', type: 'EGRESO', category: 'Flete', description: 'Flete Oceánico CFR - Evergreen', amount: 3200.00, status: 'PENDIENTE', timestamp: '2025-03-11T14:45:00Z', dueDate: '2025-05-15' },
+
+    // ─── 25-0008 · NY GROCERS · Duraznos New York ───
+    { id: 'TX-D070', operationId: '25-0008', date: '2025-03-01', type: 'INGRESO', category: 'Pago Total CAD', description: '100% CAD Copia Docs - NY GROCERS', amount: 46000.00, status: 'PAGADO', timestamp: '2025-02-25T10:00:00Z', dueDate: '2025-03-01' },
+    { id: 'TX-D071', operationId: '25-0008', date: '2025-01-29', type: 'EGRESO', category: 'Compra Productor', description: 'Pago ACONCAGUA SRL - Duraznos Elegant Lady', amount: 33350.00, status: 'PAGADO', timestamp: '2025-01-29T09:00:00Z', dueDate: '2025-01-29' },
+    { id: 'TX-D072', operationId: '25-0008', date: '2025-01-31', type: 'EGRESO', category: 'Flete', description: 'Flete FOB HAMBURG SUD', amount: 2950.00, status: 'PAGADO', timestamp: '2025-01-31T10:00:00Z', dueDate: '2025-01-31' },
+    { id: 'TX-D073', operationId: '25-0008', date: '2025-01-30', type: 'EGRESO', category: 'Inspección', description: 'Inspección USDA + fumigación', amount: 430.00, status: 'PAGADO', timestamp: '2025-01-30T08:00:00Z', dueDate: '2025-01-30' },
+    { id: 'TX-D074', operationId: '25-0008', date: '2025-01-30', type: 'EGRESO', category: 'Despachante', description: 'Despachante Exportación Buenos Aires', amount: 540.00, status: 'PAGADO', timestamp: '2025-01-30T11:00:00Z', dueDate: '2025-01-30' },
+    { id: 'TX-D075', operationId: '25-0008', date: '2025-01-31', type: 'EGRESO', category: 'Seguro', description: 'Seguro FOB - Mapfre', amount: 265.00, status: 'PAGADO', timestamp: '2025-01-31T09:00:00Z', dueDate: '2025-01-31' },
+
+    // ─── 25-0009 · MILANO AGRO · Manzanas Genova ───
+    { id: 'TX-D080', operationId: '25-0009', date: '2025-04-28', type: 'INGRESO', category: 'Pago Total', description: '100% After Border Release - MILANO AGRO', amount: 29670.00, status: 'PENDIENTE', timestamp: '2025-03-12T08:30:00Z', dueDate: '2025-04-28' },
+    { id: 'TX-D081', operationId: '25-0009', date: '2025-04-20', type: 'EGRESO', category: 'Compra Productor', description: 'Pago FRUTAS DEL SOL SA - Manzanas Granny Smith', amount: 22050.00, status: 'PENDIENTE', timestamp: '2025-03-12T08:30:00Z', dueDate: '2025-04-20' },
+    { id: 'TX-D082', operationId: '25-0009', date: '2025-04-22', type: 'EGRESO', category: 'Flete', description: 'Flete Oceánico CFR - CMA CGM', amount: 2200.00, status: 'PENDIENTE', timestamp: '2025-04-18T10:00:00Z', dueDate: '2025-04-22' },
+    { id: 'TX-D083', operationId: '25-0009', date: '2025-03-25', type: 'EGRESO', category: 'Despachante', description: 'Anticipo Despachante Exportación', amount: 280.00, status: 'PENDIENTE', timestamp: '2025-03-20T10:00:00Z', dueDate: '2025-03-25' },
+
+    // ─── 25-0010 · TOKYO FRESH · Limones Yokohama ───
+    { id: 'TX-D090', operationId: '25-0010', date: '2025-02-22', type: 'INGRESO', category: 'Adelanto', description: '30% Adelanto - TOKYO FRESH Co. Ltd.', amount: 13230.00, status: 'PAGADO', timestamp: '2025-02-20T10:15:00Z', dueDate: '2025-02-22' },
+    { id: 'TX-D091', operationId: '25-0010', date: '2025-04-15', type: 'INGRESO', category: 'Saldo CAD', description: '70% Saldo CAD - TOKYO FRESH Co. Ltd.', amount: 30870.00, status: 'PENDIENTE', timestamp: '2025-02-20T10:15:00Z', dueDate: '2025-04-15' },
+    { id: 'TX-D092', operationId: '25-0010', date: '2025-02-25', type: 'EGRESO', category: 'Compra Productor', description: 'Pago CITRUS VIL SA - 1600 ctn Limones Eureka 138', amount: 24000.00, status: 'PAGADO', timestamp: '2025-02-25T09:00:00Z', dueDate: '2025-02-25' },
+    { id: 'TX-D093', operationId: '25-0010', date: '2025-03-01', type: 'EGRESO', category: 'Flete', description: 'Flete Oceánico CIF - ONE LINE', amount: 2500.00, status: 'PAGADO', timestamp: '2025-03-01T10:00:00Z', dueDate: '2025-03-01' },
+    { id: 'TX-D094', operationId: '25-0010', date: '2025-02-26', type: 'EGRESO', category: 'Despachante', description: 'Servicio Despachante Exportación + Aduana', amount: 590.00, status: 'PAGADO', timestamp: '2025-02-26T11:00:00Z', dueDate: '2025-02-26' },
+    { id: 'TX-D095', operationId: '25-0010', date: '2025-02-27', type: 'EGRESO', category: 'Inspección', description: 'Inspección Fitosanitaria SENASA - Protocolo Japón', amount: 420.00, status: 'PAGADO', timestamp: '2025-02-27T08:00:00Z', dueDate: '2025-02-27' },
+    { id: 'TX-D096', operationId: '25-0010', date: '2025-02-28', type: 'EGRESO', category: 'Seguro', description: 'Seguro de Carga CIF - Mapfre Marine', amount: 310.00, status: 'PAGADO', timestamp: '2025-02-28T09:00:00Z', dueDate: '2025-02-28' },
+    { id: 'TX-D097', operationId: '25-0010', date: '2025-02-28', type: 'EGRESO', category: 'Comisión', description: 'Comisión Agente TOKYO FRESH (1.5%)', amount: 659.25, status: 'PAGADO', timestamp: '2025-02-26T12:00:00Z', dueDate: '2025-02-28' },
 ]
 
 export const MOCK_NOTES: Note[] = [
