@@ -133,7 +133,7 @@ export function OnboardingTour() {
         }
     }, [])
 
-    const updateCoords = useCallback(() => {
+    const computeCoords = useCallback(() => {
         if (currentStep < 0 || currentStep >= TOUR_STEPS.length) return
         const step = TOUR_STEPS[currentStep]
         const el = document.getElementById(step.targetId)
@@ -143,7 +143,6 @@ export function OnboardingTour() {
         const c = { top: rect.top, left: rect.left, width: rect.width, height: rect.height }
         setCoords(c)
 
-        // Tooltip is always to the right of the sidebar element
         const tooltipW = 300
         const tooltipH = 200
         const margin = 20
@@ -154,7 +153,6 @@ export function OnboardingTour() {
 
         setTooltipPos({ top: tTop, left: tLeft })
 
-        // Arrow points left (←) from tooltip toward the highlighted element
         const arrowCenter = c.top + c.height / 2
         const arrowLocal = arrowCenter - tTop
         setArrowStyle({
@@ -167,15 +165,23 @@ export function OnboardingTour() {
             borderBottom: '9px solid transparent',
             borderRight: '9px solid rgba(220,166,75,0.4)',
         })
-
-        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }, [currentStep])
 
+    // Recompute on step change — use rAF so DOM has settled
     useEffect(() => {
-        updateCoords()
-        window.addEventListener('resize', updateCoords)
-        return () => window.removeEventListener('resize', updateCoords)
-    }, [updateCoords])
+        const raf = requestAnimationFrame(computeCoords)
+        return () => cancelAnimationFrame(raf)
+    }, [computeCoords])
+
+    // Recompute on resize OR any scroll (main content scroll shifts nothing in sidebar, but keeps ring accurate)
+    useEffect(() => {
+        window.addEventListener('resize', computeCoords)
+        window.addEventListener('scroll', computeCoords, true) // capture phase catches nested scrolls too
+        return () => {
+            window.removeEventListener('resize', computeCoords)
+            window.removeEventListener('scroll', computeCoords, true)
+        }
+    }, [computeCoords])
 
     const handleNext = () => {
         if (currentStep < TOUR_STEPS.length - 1) setCurrentStep(p => p + 1)
