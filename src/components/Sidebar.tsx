@@ -69,9 +69,14 @@ export function Sidebar() {
         const loadImpersonation = () => {
             setImpersonatedUser(localStorage.getItem('smt_impersonated_user'))
         }
+        const handleOpenMobile = () => setMobileOpen(true)
         loadImpersonation()
         window.addEventListener('smt-impersonation-changed', loadImpersonation)
-        return () => window.removeEventListener('smt-impersonation-changed', loadImpersonation)
+        document.addEventListener('open-mobile-sidebar', handleOpenMobile)
+        return () => {
+            window.removeEventListener('smt-impersonation-changed', loadImpersonation)
+            document.removeEventListener('open-mobile-sidebar', handleOpenMobile)
+        }
     }, [])
 
     const activeUserEmail = impersonatedUser || session?.user?.email?.toLowerCase() || ''

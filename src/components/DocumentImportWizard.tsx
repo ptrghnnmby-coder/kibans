@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { X, Upload, Loader2, CheckCircle2, Sparkles, ChevronRight, FileText } from 'lucide-react'
 import { AIFeatureBadge } from './AIFeatureBadge'
 import { useToast } from './ui/Toast'
@@ -80,8 +80,16 @@ export default function DocumentImportWizard({ isOpen, onClose, operationId, isD
     const [fields, setFields] = useState<ExtractedField>({})
     const [opId, setOpId] = useState(operationId || '')
     const [isSaving, setIsSaving] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
     const fileRef = useRef<HTMLInputElement>(null)
     const { showToast } = useToast()
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
 
     if (!isOpen) return null
 
@@ -144,11 +152,23 @@ export default function DocumentImportWizard({ isOpen, onClose, operationId, isD
     ) : null
 
     return (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-            <div style={{ background: 'var(--surface-raised)', borderRadius: '20px', border: '1px solid var(--border)', width: '100%', maxWidth: '720px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 30px 80px rgba(0,0,0,0.6)' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? '0' : '20px' }}>
+            <div style={{
+                background: 'var(--surface-raised)',
+                borderRadius: isMobile ? '0' : '20px',
+                border: isMobile ? 'none' : '1px solid var(--border)',
+                width: '100%',
+                maxWidth: isMobile ? 'none' : '720px',
+                height: isMobile ? '100%' : 'auto',
+                maxHeight: isMobile ? 'none' : '90vh',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+                boxShadow: '0 30px 80px rgba(0,0,0,0.6)'
+            }}>
 
                 {/* Header */}
-                <div style={{ padding: '18px 24px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '12px', background: 'linear-gradient(135deg, #0a1628 0%, #0d2244 100%)' }}>
+                <div style={{ padding: isMobile ? '16px' : '18px 24px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '12px', background: 'linear-gradient(135deg, #0a1628 0%, #0d2244 100%)' }}>
                     <Sparkles size={20} color="#dca64b" fill="#dca64b" />
                     <div style={{ flex: 1 }}>
                         <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: '#fff' }}>Importar Documento con IA</h3>
@@ -163,12 +183,12 @@ export default function DocumentImportWizard({ isOpen, onClose, operationId, isD
                 </div>
 
                 {/* Step indicators */}
-                <div style={{ display: 'flex', padding: '12px 24px', gap: '8px', borderBottom: '1px solid var(--border)', background: 'rgba(0,0,0,0.15)' }}>
+                <div style={{ display: 'flex', padding: isMobile ? '10px 16px' : '12px 24px', gap: '8px', borderBottom: '1px solid var(--border)', background: 'rgba(0,0,0,0.15)', overflowX: 'auto', whiteSpace: 'nowrap' }}>
                     {(['upload', 'review', 'saved'] as const).map((s, i) => (
-                        <div key={s} style={{ display: 'flex', alignItems: 'center', gap: '6px', opacity: step === s ? 1 : 0.4 }}>
+                        <div key={s} style={{ display: 'flex', alignItems: 'center', gap: '6px', opacity: step === s ? 1 : 0.4, flexShrink: 0 }}>
                             <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: step === s ? '#dca64b' : 'var(--surface)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, color: step === s ? '#000' : 'var(--text-dim)' }}>{i + 1}</div>
                             <span style={{ fontSize: '11px', fontWeight: 600, color: step === s ? 'var(--text)' : 'var(--text-dim)' }}>
-                                {s === 'upload' ? 'Subir archivo' : s === 'review' ? 'Revisar campos' : 'Guardado'}
+                                {s === 'upload' ? (isMobile ? 'Subir' : 'Subir archivo') : s === 'review' ? (isMobile ? 'Revisar' : 'Revisar campos') : 'Guardado'}
                             </span>
                             {i < 2 && <ChevronRight size={12} style={{ color: 'var(--text-dim)' }} />}
                         </div>
@@ -176,7 +196,7 @@ export default function DocumentImportWizard({ isOpen, onClose, operationId, isD
                 </div>
 
                 {/* Content */}
-                <div style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
+                <div style={{ flex: 1, overflowY: 'auto', padding: isMobile ? '16px' : '24px' }}>
 
                     {step === 'upload' && (
                         <div
@@ -314,12 +334,12 @@ export default function DocumentImportWizard({ isOpen, onClose, operationId, isD
 
                 {/* Footer */}
                 {step === 'review' && (
-                    <div style={{ padding: '16px 24px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'flex-end', gap: '10px', background: 'rgba(0,0,0,0.1)' }}>
-                        <button onClick={handleClose} style={{ padding: '9px 20px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '10px', color: 'var(--text)', fontWeight: 600, cursor: 'pointer', fontSize: '13px' }}>
+                    <div style={{ padding: isMobile ? '12px 16px' : '16px 24px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'flex-end', gap: '10px', background: 'rgba(0,0,0,0.1)' }}>
+                        <button onClick={handleClose} style={{ padding: '9px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '10px', color: 'var(--text)', fontWeight: 600, cursor: 'pointer', fontSize: '13px' }}>
                             Cancelar
                         </button>
-                        <button onClick={handleSave} disabled={isSaving} style={{ padding: '9px 24px', background: 'var(--accent)', border: 'none', borderRadius: '10px', color: '#000', fontWeight: 700, cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            {isSaving ? <><Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />Guardando…</> : <><FileText size={14} />Guardar y Aplicar</>}
+                        <button onClick={handleSave} disabled={isSaving} style={{ padding: '9px 20px', background: 'var(--accent)', border: 'none', borderRadius: '10px', color: '#000', fontWeight: 700, cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', flex: isMobile ? 1 : 'none', justifyContent: 'center' }}>
+                            {isSaving ? <><Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />Guardando…</> : <><FileText size={14} />{isMobile ? 'Aplicar' : 'Guardar y Aplicar'}</>}
                         </button>
                     </div>
                 )}

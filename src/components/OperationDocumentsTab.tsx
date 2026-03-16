@@ -33,7 +33,15 @@ export default function OperationDocumentsTab({ op, allContacts, onUpdate }: Ope
     const [isImportWizardOpen, setIsImportWizardOpen] = useState(false)
     const [opToDelete, setOpToDelete] = useState<{ type: 'PI' | 'PO' | 'Booking' | 'Invoice', docId: string } | null>(null)
     const [isDeleting, setIsDeleting] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
     const { showToast } = useToast()
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
 
     // Sincronizar selección automática cuando aparecen nuevos documentos
     useEffect(() => {
@@ -214,7 +222,7 @@ export default function OperationDocumentsTab({ op, allContacts, onUpdate }: Ope
     }
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 'var(--space-6)', height: 'calc(100vh - 250px)', minHeight: '600px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '320px 1fr', gap: isMobile ? 'var(--space-4)' : 'var(--space-6)', height: isMobile ? 'auto' : 'calc(100vh - 250px)', minHeight: isMobile ? 'auto' : '600px' }}>
 
             {/* Sidebar */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', overflowY: 'auto' }}>
@@ -263,7 +271,7 @@ export default function OperationDocumentsTab({ op, allContacts, onUpdate }: Ope
 
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '4px' }}>
                                     {doc.docId ? (
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
+                                        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '8px' }}>
                                             {/* Fila 1: Enviar por Mail – ancho completo */}
                                             <button
                                                 className="btn btn-secondary"

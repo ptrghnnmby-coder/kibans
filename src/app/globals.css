@@ -361,7 +361,17 @@ a {
   padding: var(--space-1);
   border-radius: var(--radius-md);
   width: fit-content;
+  max-width: 100%;
   border: 1px solid var(--border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabs-container::-webkit-scrollbar {
+  display: none;
+}
+.tabs-container {
+  scrollbar-width: none;
 }
 
 .tab-button {
@@ -1476,13 +1486,16 @@ textarea::placeholder {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 56px;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    z-index: 997;
+    height: 64px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(220, 166, 75, 0.2);
+    z-index: 1000;
     align-items: stretch;
-    padding: 0 4px;
+    padding: 0 8px;
     padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
   }
 
   .mobile-nav-item {
@@ -1491,14 +1504,14 @@ textarea::placeholder {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2px;
     color: var(--text-dim);
-    font-size: 8px;
+    gap: 4px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 8px; /* Kept original font-size for icon, text will be in span */
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.3px;
     text-decoration: none;
-    transition: color 0.15s;
     border-radius: var(--radius-sm);
     padding: 4px 2px;
     min-width: 0;

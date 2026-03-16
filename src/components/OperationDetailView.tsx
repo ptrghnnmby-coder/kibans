@@ -83,6 +83,14 @@ export default function OperationDetailView({ initialOp, allProducts, allContact
     const router = useRouter()
     const { showToast } = useToast()
     const [op, setOp] = useState(initialOp)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
 
     useEffect(() => {
         setOp(initialOp)
@@ -1483,7 +1491,7 @@ export default function OperationDetailView({ initialOp, allProducts, allContact
                                                         { label: 'Ship Lane', value: op.shipLane, field: 'shipLane', icon: <RefreshCw size={14} /> },
                                                         { label: 'Freight Value', value: op.freightValue, field: 'freightValue', icon: <DollarSign size={14} />, color: 'var(--accent)' },
                                                     ].map((item, idx) => (
-                                                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '100px 1fr', alignItems: 'center', gap: '8px' }}>
+                                                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '100px 1fr', alignItems: 'center', gap: '8px' }}>
                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)' }}>
                                                                 {item.icon}
                                                                 <span style={{ fontSize: '11px', fontWeight: 600 }}>{item.label}</span>
@@ -1993,7 +2001,7 @@ export default function OperationDetailView({ initialOp, allProducts, allContact
                                 <span style={{ color: 'var(--red)', fontWeight: 600 }}>Esta acción no se puede deshacer.</span>
                             </p>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '12px' : '16px' }}>
                                 <Button
                                     variant="secondary"
                                     onClick={() => setDeleteModal(false)}
@@ -2123,7 +2131,7 @@ export default function OperationDetailView({ initialOp, allProducts, allContact
                                 <span style={{ color: 'var(--cyan)', fontWeight: 600 }}>Todos los datos financieros y logísticos serán preservados.</span>
                             </p>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '12px' : '16px' }}>
                                 <Button
                                     variant="secondary"
                                     onClick={() => setShowLiquidationModal(false)}
@@ -2269,7 +2277,7 @@ export default function OperationDetailView({ initialOp, allProducts, allContact
                         </div>
 
                         {/* Refrigeration & Insurance Specs */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 'var(--space-4)' : 'var(--space-6)' }}>
                             <div className="card" style={{ padding: 'var(--space-6)' }}>
                                 <h3 style={{ fontSize: '12px', fontWeight: 800, marginBottom: 'var(--space-4)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <RefreshCw size={16} color="var(--cyan)" /> ESPECIFICACIONES DE FRÍO

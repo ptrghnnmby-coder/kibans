@@ -22,17 +22,26 @@ import { ShipmentStatusWidget } from '@/components/dashboard/ShipmentStatusWidge
 import { ProspectsWidget } from '@/components/ProspectsWidget'
 import { AgendaWidget } from '@/components/AgendaWidget'
 
-export default function Dashboard() {
+export default function DashboardPage() {
     const { data: session } = useSession()
     const router = useRouter()
+    const isDemo = (session?.user as any)?.isDemo
+    const [showBriefing, setShowBriefing] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
     const [data, setData] = useState<DashboardData | null>(null)
     const [loading, setLoading] = useState(true)
     const [name, setName] = useState<string>('equipo')
     const [avatarName, setAvatarName] = useState<string>('User')
     const [impersonatedEmail, setImpersonatedEmail] = useState<string | null>(null)
     const [enabledWidgets, setEnabledWidgets] = useState<string[]>(['recent_ops', 'notes', 'financial_summary', 'cashflow', 'prospects', 'agenda'])
-    const [showBriefing, setShowBriefing] = useState(false)
-    const isDemo = (session?.user as any)?.isDemo
 
     useEffect(() => {
         const loadUserData = () => {
@@ -345,14 +354,21 @@ export default function Dashboard() {
             {/* Marta Briefing Card */}
             {showBriefing && (
                 <div style={{
-                    position: 'fixed', bottom: '80px', right: '24px', zIndex: 9990,
-                    width: '320px',
-                    background: 'var(--surface-raised)',
-                    border: '1px solid rgba(220,166,75,0.4)',
-                    borderRadius: '16px',
-                    boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-                    overflow: 'hidden',
-                    animation: 'briefingSlideIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
+                    position: 'fixed',
+                    bottom: isMobile ? '20px' : '80px',
+                    right: isMobile ? '16px' : '24px',
+                    left: isMobile ? '16px' : 'auto',
+                    width: isMobile ? 'auto' : '320px',
+                    background: 'linear-gradient(135deg, #0a1628 0%, #0d2244 100%)',
+                    borderRadius: '24px',
+                    border: '1px solid rgba(220,166,75,0.3)',
+                    padding: '20px',
+                    boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
+                    zIndex: 1000,
+                    animation: 'briefingSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px'
                 }}>
                     {/* Header */}
                     <div style={{

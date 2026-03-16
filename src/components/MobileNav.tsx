@@ -7,13 +7,10 @@ import { useSession, signOut } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import { USER_MAP } from '@/lib/sheets-types'
 
-const mobileNavItems = [
+const primaryNavItems = [
     { name: 'Inicio', href: '/', icon: LayoutDashboard },
     { name: 'Ops', href: '/operaciones', icon: Ship },
     { name: 'Finanzas', href: '/finanzas', icon: DollarSign },
-    { name: 'Leads', href: '/leads', icon: Target },
-    { name: 'Prods', href: '/productos', icon: Package },
-    { name: 'Contactos', href: '/contactos', icon: Users },
     { name: 'Chat', href: '/chat/equipo', icon: MessageSquare },
 ]
 
@@ -41,22 +38,19 @@ export function MobileNav() {
     const activeUserEmail = impersonatedUser || session?.user?.email?.toLowerCase() || ''
     const isFinanzasHidden = activeUserEmail === 'hm@southmarinetrading.com' || activeUserEmail === 'admin@southmarinetrading.com'
 
-    const filteredItems = mobileNavItems.filter(item => {
+    const filteredItems = primaryNavItems.filter(item => {
         if (item.name === 'Finanzas' && isFinanzasHidden) return false
         return true
     })
 
-    const handleLogout = () => {
-        localStorage.removeItem('user-profile')
-        localStorage.removeItem('user-avatar-svg')
-        signOut({ callbackUrl: '/login' })
+    const openSidebar = () => {
+        document.dispatchEvent(new CustomEvent('open-mobile-sidebar'))
     }
 
     // Get user initials for avatar fallback
     const userInfo = session?.user ? (USER_MAP as any)[session.user.email?.toLowerCase() || ''] : null
     const displayName = userInfo?.name || session?.user?.name || ''
     const initials = displayName ? displayName.slice(0, 1).toUpperCase() : '?'
-    const isConfigActive = pathname === '/configuracion'
 
     return (
         <nav className="mobile-bottom-nav">
@@ -75,40 +69,34 @@ export function MobileNav() {
                 )
             })}
 
-            {/* Profile / Configuración — avatar button */}
+            {/* "Más" button to open remaining options via Sidebar */}
+            <button
+                onClick={openSidebar}
+                className="mobile-nav-item"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+            >
+                <Menu size={20} strokeWidth={1.8} />
+                <span>Más</span>
+            </button>
+
+            {/* Profile */}
             <Link
                 href="/configuracion"
-                className={`mobile-nav-item ${isConfigActive ? 'active' : ''}`}
-                style={{ position: 'relative' }}
+                className={`mobile-nav-item ${pathname === '/configuracion' ? 'active' : ''}`}
             >
                 <div style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: '50%',
-                    background: isConfigActive ? 'var(--accent)' : 'var(--surface-raised)',
-                    border: `1.5px solid ${isConfigActive ? 'var(--accent)' : 'var(--border)'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '11px',
-                    fontWeight: 800,
-                    color: isConfigActive ? 'white' : 'var(--text-muted)',
-                    transition: 'all 0.2s',
+                    width: 22, height: 22, borderRadius: '50%',
+                    background: pathname === '/configuracion' ? 'var(--accent)' : 'var(--surface-raised)',
+                    border: `1.5px solid ${pathname === '/configuracion' ? 'var(--accent)' : 'var(--border)'}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '10px', fontWeight: 800, color: pathname === '/configuracion' ? 'white' : 'var(--text-muted)'
                 }}>
                     {initials}
                 </div>
                 <span>Perfil</span>
             </Link>
-
-            {/* Logout */}
-            <button
-                onClick={handleLogout}
-                className="mobile-nav-item"
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
-            >
-                <LogOut size={20} strokeWidth={1.8} style={{ color: 'var(--red)' }} />
-                <span style={{ color: 'var(--red)' }}>Salir</span>
-            </button>
         </nav>
     )
 }
+
+import { Menu } from 'lucide-react'
