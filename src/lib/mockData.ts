@@ -4,35 +4,32 @@ export const MOCK_FLETES: Flete[] = [
     {
         id_operacion: '25-0004',
         forwarder: 'MSC LOGISTICS',
-        tarifa: 1850.00,
+        monto: 1850.00,
+        moneda: 'USD',
+        seguro: 'SI',
+        temp: '-1.5',
         validez: '2025-04-30',
-        free_days: 14,
-        observaciones: 'Incluye THC en origen',
-        estado: 'Pendiente',
-        fecha_solicitud: '2025-03-01T10:00:00Z',
-        fecha_actualizacion: '2025-03-02T10:00:00Z'
+        estado: 'Pendiente'
     },
     {
         id_operacion: '25-0004',
         forwarder: 'HAPAG LLOYD',
-        tarifa: 1900.00,
+        monto: 1900.00,
+        moneda: 'USD',
+        seguro: 'NO',
+        temp: '-1.5',
         validez: '2025-04-15',
-        free_days: 21,
-        observaciones: 'Ruta directa, menor Transit Time',
-        estado: 'Aprobado',
-        fecha_solicitud: '2025-03-01T11:00:00Z',
-        fecha_actualizacion: '2025-03-05T09:00:00Z'
+        estado: 'Seleccionado'
     },
     {
         id_operacion: '25-0009',
         forwarder: 'CMA CGM',
-        tarifa: 2200.00,
+        monto: 2200.00,
+        moneda: 'USD',
+        seguro: 'SI',
+        temp: '0.5',
         validez: '2025-05-10',
-        free_days: 10,
-        observaciones: 'Sujeto a confirmación de espacio',
-        estado: 'Pendiente',
-        fecha_solicitud: '2025-03-10T14:00:00Z',
-        fecha_actualizacion: '2025-03-11T16:00:00Z'
+        estado: 'Pendiente'
     }
 ]
 
@@ -521,16 +518,16 @@ export const MOCK_DASHBOARD_STATS = {
 }
 
 export const MOCK_PRODUCTOS = [
-    { id: 'P-001', especie: 'Manzanas', variedad: 'Red Delicious', calibre: '100', envase: 'Caja 18kg', marca: 'GlobalFresh' },
-    { id: 'P-002', especie: 'Manzanas', variedad: 'Granny Smith', calibre: '110', envase: 'Caja 18kg', marca: 'GlobalFresh' },
-    { id: 'P-003', especie: 'Peras', variedad: 'Packhams', calibre: '90', envase: 'Caja 15kg', marca: 'DelSol' },
-    { id: 'P-004', especie: 'Peras', variedad: 'Danjou', calibre: '100', envase: 'Caja 15kg', marca: 'DelSol' },
-    { id: 'P-005', especie: 'Arándanos', variedad: 'Duke', calibre: '14mm', envase: 'Clamshell 125g', marca: 'BerryBest' },
-    { id: 'P-006', especie: 'Limones', variedad: 'Eureka', calibre: '138', envase: 'Caja 15kg', marca: 'CitrusVil' },
-    { id: 'P-007', especie: 'Uvas', variedad: 'Red Globe', calibre: 'XL', envase: 'Caja 8.2kg', marca: 'VineYard' },
-    { id: 'P-008', especie: 'Mandarinas', variedad: 'W. Murcott', calibre: '2', envase: 'Caja 10kg', marca: 'CitrusVil' },
-    { id: 'P-009', especie: 'Cerezas', variedad: 'Bing', calibre: 'Jumbo', envase: 'Caja 5kg', marca: 'PatagoniaFresh' },
-    { id: 'P-010', especie: 'Duraznos', variedad: 'Elegant Lady', calibre: '40', envase: 'Caja 10kg', marca: 'Aconcagua' }
+    { id: 'P-001', especie: 'Manzanas', variedad: 'Red Delicious', calibre: '1176', envase: 'Caja 18kg', marca: 'GlobalFresh', corte: 'Entera', packing: 'Cartón' },
+    { id: 'P-002', especie: 'Manzanas', variedad: 'Granny Smith', calibre: '110', envase: 'Caja 18kg', marca: 'GlobalFresh', corte: 'Entera', packing: 'Cartón' },
+    { id: 'P-003', especie: 'Peras', variedad: 'Packhams', calibre: '1260', envase: 'Caja 15kg', marca: 'DelSol', corte: 'Entera', packing: 'Cartón' },
+    { id: 'P-004', especie: 'Peras', variedad: 'Danjou', calibre: '100', envase: 'Caja 15kg', marca: 'DelSol', corte: 'Entera', packing: 'Cartón' },
+    { id: 'P-005', especie: 'Arándanos', variedad: 'Duke', calibre: '14mm', envase: 'Clamshell 125g', marca: 'BerryBest', corte: 'Frescos', packing: 'Clamshell' },
+    { id: 'P-006', especie: 'Limones', variedad: 'Eureka', calibre: '1600', envase: 'Caja 15kg', marca: 'CitrusVil', corte: 'Entera', packing: 'Cartón' },
+    { id: 'P-007', especie: 'Uvas', variedad: 'Red Globe', calibre: 'XL', envase: 'Caja 8.2kg', marca: 'VineYard', corte: 'Racimo', packing: 'Cartón' },
+    { id: 'P-008', especie: 'Mandarinas', variedad: 'W. Murcott', calibre: '2', envase: 'Caja 10kg', marca: 'CitrusVil', corte: 'Entera', packing: 'Cartón' },
+    { id: 'P-009', especie: 'Cerezas', variedad: 'Bing', calibre: 'Jumbo', envase: 'Caja 5kg', marca: 'PatagoniaFresh', corte: 'Entera', packing: 'Cartón' },
+    { id: 'P-010', especie: 'Duraznos', variedad: 'Elegant Lady', calibre: '40', envase: 'Caja 10kg', marca: 'Aconcagua', corte: 'Entera', packing: 'Cartón' }
 ]
 
 export const MOCK_LEADS: import('./sheets-types').Lead[] = [
