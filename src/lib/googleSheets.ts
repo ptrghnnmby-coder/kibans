@@ -1463,11 +1463,11 @@ export async function getCRMInteractions(contactId?: string, leadId?: string): P
         const interactions: CRMInteraction[] = []
 
         // Column mapping:
-        // A: ID_Contacto, B: Fecha, C: Tipo Interaccion, D: Usuario Marta, E: Resultado / Nota, F: Proximo Paso, G: ID_Lead
+        // A: ID_Contacto, B: Fecha, C: Tipo Interaccion, D: Usuario Tess, E: Resultado / Nota, F: Proximo Paso, G: ID_Lead
         const contactIdx = headers.indexOf('id_contacto')
         const leadIdx = headers.indexOf('id_lead')
         const dateIdx = headers.indexOf('fecha')
-        const userIdx = headers.indexOf('usuario marta')
+        const userIdx = headers.indexOf('usuario tess')
         const noteIdx = headers.findIndex(h => h.includes('resultado') || h.includes('nota'))
 
         for (let i = 1; i < data.length; i++) {
@@ -1503,7 +1503,7 @@ export async function addCRMInteraction(interaction: Omit<CRMInteraction, 'id' |
         if (data.length > 0) {
             headers = data[0].map(h => h.trim())
         } else {
-            headers = ['ID_Contacto', 'Fecha', 'Tipo Interaccion', 'Usuario Marta', 'Resultado / Nota', 'Proximo Paso', 'ID_Lead']
+            headers = ['ID_Contacto', 'Fecha', 'Tipo Interaccion', 'Usuario Tess', 'Resultado / Nota', 'Proximo Paso', 'ID_Lead']
             await appendRow(spreadsheetId, `${tabName}!A:G`, headers)
         }
 
@@ -1521,7 +1521,7 @@ export async function addCRMInteraction(interaction: Omit<CRMInteraction, 'id' |
         setVal('id_contacto', interaction.contactId || '')
         setVal('id_lead', interaction.leadId || '')
         setVal('fecha', timestamp)
-        setVal('usuario marta', interaction.author)
+        setVal('usuario tess', interaction.author)
         setVal('resultado / nota', interaction.message)
         setVal('tipo interaccion', 'Nota')
 
@@ -3909,8 +3909,8 @@ export async function getHistoricalAnalysis(productOrRoute: string) {
             })
         })
 
-        // También buscar en courier si parece una ruta (ej: "Marta:Courier:China")
-        // Pero Marta decidirá cuándo usarlo. Agregamos el predictor aquí por si acaso.
+        // También buscar en courier si parece una ruta (ej: "Tess:Courier:China")
+        // Pero Tess decidirá cuándo usarlo. Agregamos el predictor aquí por si acaso.
 
         return matches.sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10)
     } catch (error) {
@@ -4666,8 +4666,8 @@ export async function getTeamMessages(chatId: string, userEmail?: string): Promi
                 }
                 
                 // Bot chat filtering
-                if (chatId === 'marta@bot' && userEmail) {
-                    return (from === 'marta@bot' && to === userEmail) || (to === 'marta@bot' && from === userEmail);
+                if (chatId === 'tess@bot' && userEmail) {
+                    return (from === 'tess@bot' && to === userEmail) || (to === 'tess@bot' && from === userEmail);
                 }
 
                 // Direct chat (either from user A to B or vice versa)

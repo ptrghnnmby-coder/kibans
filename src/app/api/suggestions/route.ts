@@ -10,7 +10,7 @@ export async function POST(req: Request) {
         console.log(`Concept: ${concept}`)
         console.log(`Details: ${details}`)
         console.log(`From: ${userEmail || 'anonymous'}`)
-        console.log(`Intended Recipient: Marta System (natyzambonini@gmail.com)`)
+        console.log(`Intended Recipient: Tess System (natyzambonini@gmail.com)`)
 
         // In a real scenario, we would use a library like nodemailer or an external API (SendGrid, Postmark)
         // to send the email to hello@kibans.com.

@@ -31,7 +31,7 @@ export function CashFlowManager({
     const [editingTxId, setEditingTxId] = useState<string | null>(null)
     const [confirmModal, setConfirmModal] = useState<{ txId: string; amount: number; description?: string; type: 'PAY' | 'DELETE' } | null>(null)
     const [showSuccess, setShowSuccess] = useState<{ message: string } | null>(null)
-    const [userName, setUserName] = useState('Marta')
+    const [userName, setUserName] = useState('Tess')
     const [isAdmin, setIsAdmin] = useState(false)
     const [liquidating, setLiquidating] = useState(false)
     const [showLiquidateConfirm, setShowLiquidateConfirm] = useState(false)

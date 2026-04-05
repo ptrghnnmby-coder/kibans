@@ -40,7 +40,7 @@ export async function GET(req: Request) {
                 })
 
             const mockGeneralItems = [
-                { id: 'M-1', date: startDate, time: '10:00', title: 'Reunión de Equipo (Mañana)', type: 'MEETING' as const, status: 'PENDING', creator: 'Marta' },
+                { id: 'M-1', date: startDate, time: '10:00', title: 'Reunión de Equipo (Mañana)', type: 'MEETING' as const, status: 'PENDING', creator: 'Tess' },
                 { id: 'M-2', date: endDate, title: 'Revisar Booking Manzanas', type: 'TASK' as const, status: 'PENDING', creator: 'Rafa' }
             ]
 

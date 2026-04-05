@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { Calendar as CalendarIcon, ArrowUpCircle, ArrowDownCircle, Check } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '../ui/Toast'
+import { AIFeatureBadge } from '@/components/AIFeatureBadge'
 
 interface CashFlowTransaction {
     id: string
@@ -97,6 +98,11 @@ export function CashFlowWidget() {
                         <CalendarIcon size={18} className="text-accent" />
                         Calendario de Flujo de Caja
                     </h2>
+                    <AIFeatureBadge 
+                        title="Cashflow Autónomo" 
+                        description="Tess analiza los hitos de carga y descarga para proyectar los vencimientos de fletes y gastos locales. Identifica automáticamente facturas pendientes basadas en el workflow operativo para evitar falta de liquidez." 
+                        position="bottom"
+                    />
                     <div className="badge badge-info text-[10px]">Próximos 15 días</div>
                 </div>
 

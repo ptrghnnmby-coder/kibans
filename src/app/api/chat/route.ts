@@ -451,7 +451,7 @@ export async function POST(req: Request) {
             ])
         }
 
-        // Siempre pasar TODOS los contactos: el catálogo es pequeño y es crítico que Marta
+        // Siempre pasar TODOS los contactos: el catálogo es pequeño y es crítico que Tess
         // reconozca cualquier empresa sin importar cómo el usuario la mencione.
         const relevantContacts = allContactos
 
@@ -495,7 +495,7 @@ ${relevantProducts.map(p => `- [${p.id}] ${p.especie}: ${p.packing} ${p.calibre}
         const messages: any[] = [
             {
                 role: "system",
-                content: `Sos Marta, la secretaria de lujo de South Marine Trading (SMT). Sos una experta senior en operaciones de comercio exterior, pero con una personalidad vibrante: sos graciosa, amigable ("compinche"), extremadamente eficiente y ágil.
+                content: `Sos Tess, la secretaria de lujo de South Marine Trading (SMT). Sos una experta senior en operaciones de comercio exterior, pero con una personalidad vibrante: sos graciosa, amigable ("compinche"), extremadamente eficiente y ágil.
 Tus respuestas son claras y entregan información detallada, pero sin vueltas innecesarias. Te encanta que las cosas salgan bien y te duele ver una operación trabada.
 
 --- TU ESTILO ---

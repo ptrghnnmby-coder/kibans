@@ -22,7 +22,7 @@ export default function Loading() {
                 }} />
             </div>
             <div style={{ textAlign: 'center' }}>
-                <h2 className="label-marta" style={{ marginBottom: 'var(--space-2)' }}>Cargando Detalles</h2>
+                <h2 className="label-tess" style={{ marginBottom: 'var(--space-2)' }}>Cargando Detalles</h2>
                 <p style={{ color: 'var(--text-muted)', fontSize: 'var(--font-size-sm)' }}>
                     Sincronizando con base de datos operativa...
                 </p>

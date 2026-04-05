@@ -6,6 +6,7 @@ import { Plus, X, Search, Edit2, Fish, Box, Globe, Eye, Trash2 } from 'lucide-re
 import { useRouter } from 'next/navigation'
 import { useToast } from './ui/Toast'
 import { ProductForm } from './ProductForm'
+import { AIFeatureBadge } from '@/components/AIFeatureBadge'
 
 const SPECIES_ICON_MAP: Record<string, string> = {
     'Croacker': '/icons/species/croacker_v2.png',
@@ -153,6 +154,11 @@ export function ProductsView({ initialProducts }: ProductsViewProps) {
                     <h1 className="dashboard-title">Catálogo de Productos</h1>
                     <p className="dashboard-subtitle">Gestioná tu oferta exportable ({initialProducts.length} items)</p>
                 </div>
+                <AIFeatureBadge 
+                    title="Catálogo Inteligente" 
+                    description="Tess asiste en la creación de variantes de producto detectando inconsistencias en el peso de caja, packing y nombres científicos para asegurar una base de datos maestra impecable." 
+                    position="bottom"
+                />
                 <button
                     onClick={() => {
                         setEditingProduct(null)

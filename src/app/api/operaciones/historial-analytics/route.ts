@@ -25,6 +25,10 @@ export interface EnrichedOp extends Operacion {
     costo: number
     ganancia: number
     margen: number       // 0–100
+    productName?: string
+    month?: number
+    year?: number
+    containerCount?: number
 }
 
 export async function GET() {
@@ -53,7 +57,6 @@ export async function GET() {
             // Try exact match, then loose match
             let txs = txsByOp[opId] || []
             if (txs.length === 0) {
-                // Try loose: any key that starts with opId or vice versa
                 const key = Object.keys(txsByOp).find(k =>
                     k.toLowerCase().includes(opId.toLowerCase()) ||
                     opId.toLowerCase().includes(k.toLowerCase())
@@ -70,17 +73,14 @@ export async function GET() {
                     else if (tx.type === 'EGRESO') costo += tx.amount
                 }
             } else {
-                // Fallback to operation fields
                 ingreso = parseAmount(op.totalFOB) || parseAmount(op.fobGranTotal) || 0
                 const purchase = parseAmount(op.totalPurchase) || 0
                 const freight = parseAmount(op.freightValue) || 0
                 costo = purchase + freight
                 
-                // Si aún así no hay ingreso ni costo, derivamos directo de los productos anotados
                 if (ingreso === 0 && costo === 0) {
                     const salesProds = parseProductEntries(op.productos)
                     const purchProds = parseProductEntries(op.purchasePricesRaw)
-                    
                     ingreso = salesProds.reduce((sum, p) => sum + (p.qty * p.price), 0)
                     costo = purchProds.reduce((sum, p) => sum + (p.qty * p.price), 0) + freight
                 }
@@ -89,7 +89,26 @@ export async function GET() {
             const ganancia = ingreso - costo
             const margen = ingreso > 0 ? (ganancia / ingreso) * 100 : 0
 
-            return { ...op, ingreso, costo, ganancia, margen }
+            // New: Extract product name for analysis
+            const productName = op.productos?.split(':')[0] || 'Varios'
+            
+            // New: Date normalization for trends
+            const dateStr = op.fechaEmbarque || op.loadedDate || ''
+            const date = dateStr ? new Date(dateStr) : new Error()
+            const month = (date instanceof Date && !isNaN(date.getTime())) ? date.getMonth() + 1 : 0
+            const year = (date instanceof Date && !isNaN(date.getTime())) ? date.getFullYear() : 0
+
+            return { 
+                ...op, 
+                ingreso, 
+                costo, 
+                ganancia, 
+                margen,
+                productName,
+                month,
+                year,
+                containerCount: op.containerNumber ? 1 : 0 // Simple assumption for demo
+            }
         })
 
         return NextResponse.json({ success: true, data: enriched })

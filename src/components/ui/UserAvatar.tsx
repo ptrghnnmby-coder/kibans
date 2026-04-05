@@ -12,7 +12,7 @@ interface UserAvatarProps {
 
 export function UserAvatar({ email, size = 32, variant = 'solid', style = {}, showInitialFallback = true }: UserAvatarProps) {
     const user = USER_MAP[email.toLowerCase()]
-    const isBot = email === 'marta@bot'
+    const isBot = email === 'tess@bot'
 
     if (isBot) {
         return (

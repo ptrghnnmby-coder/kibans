@@ -18,7 +18,7 @@ const mensajesIniciales: Message[] = [
     {
         id: 1,
         role: 'assistant',
-        content: '¡Hola! 👋 Soy Marta, tu Asistente SMT en South Marine Trading.\n\nEstoy lista para ayudarte a que todo fluya con agilidad. ¿Vemos qué hay pendiente hoy?',
+        content: '¡Hola! 👋 Soy Tess, tu Asistente SMT en South Marine Trading.\n\nEstoy lista para ayudarte a que todo fluya con agilidad. ¿Vemos qué hay pendiente hoy?',
         timestamp: new Date(),
     },
 ]
@@ -56,13 +56,13 @@ export default function ChatPage() {
         const fetchHistory = async () => {
             if (!session?.user?.email) return
             try {
-                const res = await fetch(`/api/chat/team?chatId=marta@bot`)
+                const res = await fetch(`/api/chat/team?chatId=tess@bot`)
                 if (res.ok) {
                     const data = await res.json()
                     const resolved = data.messages.map((m: any) => ({
                         ...m,
                         timestamp: new Date(m.timestamp),
-                        role: m.from === 'marta@bot' ? 'assistant' : 'user'
+                        role: m.from === 'tess@bot' ? 'assistant' : 'user'
                     }))
 
                     if (resolved.length > 0) {
@@ -111,7 +111,7 @@ export default function ChatPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     id: userMessage.id.toString(),
-                    to: 'marta@bot',
+                    to: 'tess@bot',
                     content: userMessage.content,
                     timestamp: userMessage.timestamp.toISOString()
                 }),
@@ -235,7 +235,7 @@ export default function ChatPage() {
                     <img src="/tess_bot.png" alt="Tess" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
                 <div>
-                    <h1 style={{ fontSize: 'var(--font-size-xl)', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.5px' }}>Marta</h1>
+                    <h1 style={{ fontSize: 'var(--font-size-xl)', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.5px' }}>Tess</h1>
                     <p style={{ fontSize: 'var(--font-size-xs)', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Asistente SMT
                     </p>

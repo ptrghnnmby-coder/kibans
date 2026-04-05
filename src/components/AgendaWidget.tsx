@@ -245,7 +245,7 @@ export function AgendaWidget({ userName, userEmail = '', hideFinancials = false 
                         >
                             <option value="todos">Todos</option>
                             {Object.entries(USER_MAP)
-                                .filter(([email]) => !['info@southmarinetrading.com', 'demo@southmarinetrading.com', 'marta@southmarinetrading.com'].includes(email.toLowerCase()))
+                                .filter(([email]) => !['info@southmarinetrading.com', 'demo@southmarinetrading.com', 'tess@southmarinetrading.com'].includes(email.toLowerCase()))
                                 .map(([email, user]) => (
                                     <option key={email} value={email.toLowerCase()}>{(user as any).name}</option>
                                 ))

@@ -8,6 +8,7 @@ import { Search, Plus, MapPin, Mail, Phone, Eye } from 'lucide-react'
 import Link from 'next/link'
 
 import { Contacto } from '@/lib/sheets-types'
+import { AIFeatureBadge } from '@/components/AIFeatureBadge'
 
 export default function ContactosPage() {
     const [contactos, setContactos] = useState<Contacto[]>([])
@@ -71,6 +72,11 @@ export default function ContactosPage() {
                     <h1 className="page-title">Contactos</h1>
                     <p className="page-subtitle">Gestiona importadores, exportadores, productores y forwarders</p>
                 </div>
+                <AIFeatureBadge 
+                    title="Enriquecimiento de Datos" 
+                    description="Tess limpia y completa automáticamente los perfiles comerciales analizando bases de datos externas y documentos históricos para asegurar que el CUIT y los datos de contacto estén siempre al día." 
+                    position="bottom"
+                />
                 <Link href="/contactos/nuevo" className="btn btn-primary">
                     <Plus size={18} />
                     Nuevo Contacto

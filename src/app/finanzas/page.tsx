@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { useToast } from '@/components/ui/Toast'
 import { useSession } from 'next-auth/react'
 import { USER_MAP } from '@/lib/sheets-types'
+import { AIFeatureBadge } from '@/components/AIFeatureBadge'
 
 interface OperationFinancial {
     id: string
@@ -98,7 +99,7 @@ export default function FinanciasPage() {
     const [freightType, setFreightType] = useState<'EGRESO' | 'INFORMATIVO'>('EGRESO')
     const [savingFreight, setSavingFreight] = useState(false)
     const [confirming, setConfirming] = useState(false)
-    const [userName, setUserName] = useState('Marta')
+    const [userName, setUserName] = useState('Tess')
     const [selectedResponsible, setSelectedResponsible] = useState<string>('todos')
 
     // Inline movement editing state
@@ -443,10 +444,15 @@ export default function FinanciasPage() {
                     </Link>
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <h1 className="label-marta">Finanzas</h1>
+                            <h1 className="label-tess">Finanzas</h1>
                         </div>
                         <p className="page-title" style={{ fontSize: 'var(--font-size-2xl)' }}>Panel Financiero: Consolidado de operaciones</p>
                     </div>
+                    <AIFeatureBadge 
+                        title="Conciliación Proactiva" 
+                        description="Tess genera automáticamente el flujo de fondos proyectado analizando los hitos operativos. Detecta discrepancias de fletes y anticipa vencimientos sin carga manual." 
+                        position="bottom"
+                    />
                 </div>
 
                 <div className="w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -1491,7 +1497,7 @@ function PendingItem({ item, onAction, isVencido }: { item: AgendaItem; onAction
         <div className={`pending-card ${isVencido ? 'vencido' : ''}`}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                    <div className="label-marta" style={{ fontSize: '10px' }}>{item.operationId}</div>
+                    <div className="label-tess" style={{ fontSize: '10px' }}>{item.operationId}</div>
                     <div className="h2-premium">{item.description}</div>
                     <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{item.cliente}</div>
                 </div>

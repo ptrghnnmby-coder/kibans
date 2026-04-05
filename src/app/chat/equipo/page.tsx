@@ -62,7 +62,7 @@ export default function ChatComponent() {
             role: info.role,
             avatar: info.avatar,
             color: info.color,
-            isBot: email === 'marta@bot',
+            isBot: email === 'tess@bot',
             type: 'direct'
         }))
 
@@ -77,8 +77,8 @@ export default function ChatComponent() {
     const colleagues = isDemo ? fakeColleagues : realColleagues;
 
     const directContacts = [
-        { id: 'marta@bot', name: 'Marta', role: 'Asistente SMT', isBot: true, type: 'direct', avatar: '/tess_bot.png', color: 'var(--accent)' },
-        ...colleagues.filter(c => c.id !== 'marta@bot')
+        { id: 'tess@bot', name: 'Tess', role: 'Asistente SMT', isBot: true, type: 'direct', avatar: '/tess_bot.png', color: 'var(--accent)' },
+        ...colleagues.filter(c => c.id !== 'tess@bot')
     ]
 
     const allChats = [...ROOMS, ...directContacts]
@@ -99,7 +99,7 @@ export default function ChatComponent() {
     }, [messages])
 
     const fetchMessages = async (chatId: string) => {
-        if (isDemo && chatId !== 'marta@bot') {
+        if (isDemo && chatId !== 'tess@bot') {
             setIsInitialLoading(false);
             return;
         }
@@ -151,14 +151,14 @@ export default function ChatComponent() {
             })
         } catch (err) { console.error("Error persisting message:", err) }
 
-        if (selectedId === 'marta@bot') {
+        if (selectedId === 'tess@bot') {
             setIsLoadingAI(true)
             try {
                 const res = await fetch('/api/chat', { method: 'POST', body: JSON.stringify({ message: sentInput }) })
                 const data = await res.json()
-                const botMsg = { id: Date.now().toString(), from: 'marta@bot', to: session.user!.email!, content: data.content, timestamp: new Date().toISOString() }
+                const botMsg = { id: Date.now().toString(), from: 'tess@bot', to: session.user!.email!, content: data.content, timestamp: new Date().toISOString() }
                 await fetch('/api/chat/team', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: botMsg.id, to: session.user!.email!, content: botMsg.content }) })
-                setChats(prev => ({ ...prev, ['marta@bot']: [...(prev['marta@bot'] || []), botMsg] }))
+                setChats(prev => ({ ...prev, ['tess@bot']: [...(prev['tess@bot'] || []), botMsg] }))
             } catch (err) { console.error("Error en chat:", err) }
             finally { setIsLoadingAI(false) }
         }

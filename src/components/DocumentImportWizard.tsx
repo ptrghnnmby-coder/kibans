@@ -176,7 +176,7 @@ export default function DocumentImportWizard({ isOpen, onClose, operationId, isD
                     </div>
                     <AIFeatureBadge
                         title="GPT-4o Vision"
-                        description="Marta usa GPT-4o para leer y extraer datos de facturas, BLs, packing lists y declaraciones. Los campos quedan editables antes de guardar."
+                        description="Tess usa GPT-4o para leer y extraer datos de facturas, BLs, packing lists y declaraciones. Los campos quedan editables antes de guardar."
                         position="left"
                     />
                     <button onClick={handleClose} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', display: 'flex', padding: 0 }}><X size={18} /></button>

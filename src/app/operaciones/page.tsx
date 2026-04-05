@@ -12,6 +12,7 @@ import ProformaModal from '@/components/ProformaModal'
 import { detectCarrier, getCarrierTrackingURL } from '@/lib/containerTracking'
 import { UserAvatar } from '@/components/ui/UserAvatar'
 import { ResizableTh } from '@/components/ui/ResizableTh'
+import { AIFeatureBadge } from '@/components/AIFeatureBadge'
 const ADMIN_EMAILS = ['hm@southmarinetrading.com', 'admin@southmarinetrading.com']
 
 type TabType = 'todas' | 'por_cargar' | 'cargadas' | 'liquidadas'
@@ -86,9 +87,9 @@ function OperacionesContent() {
 
     useEffect(() => {
         // 1. Load from Cache immediately
-        const cachedOps = localStorage.getItem('marta_operaciones')
-        const cachedHist = localStorage.getItem('marta_historial')
-        const cachedCont = localStorage.getItem('marta_contactos')
+        const cachedOps = localStorage.getItem('tess_operaciones')
+        const cachedHist = localStorage.getItem('tess_historial')
+        const cachedCont = localStorage.getItem('tess_contactos')
 
         if (cachedOps && cachedHist && cachedCont) {
             try {
@@ -113,15 +114,15 @@ function OperacionesContent() {
 
                 if (resOps.success) {
                     setOperaciones(resOps.data)
-                    localStorage.setItem('marta_operaciones', JSON.stringify(resOps.data))
+                    localStorage.setItem('tess_operaciones', JSON.stringify(resOps.data))
                 }
                 if (resHistorial.success) {
                     setHistorial(resHistorial.data)
-                    localStorage.setItem('marta_historial', JSON.stringify(resHistorial.data))
+                    localStorage.setItem('tess_historial', JSON.stringify(resHistorial.data))
                 }
                 if (resContacts.success) {
                     setContactos(resContacts.data)
-                    localStorage.setItem('marta_contactos', JSON.stringify(resContacts.data))
+                    localStorage.setItem('tess_contactos', JSON.stringify(resContacts.data))
                 }
 
             } catch (error) {
@@ -228,7 +229,7 @@ function OperacionesContent() {
                     </Link>
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <h1 className="label-marta">Operaciones</h1>
+                            <h1 className="label-tess">Operaciones</h1>
                             {isRefreshing && (
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--surface-raised)', padding: '2px 8px', borderRadius: '12px', fontSize: '10px', color: 'var(--accent)', fontWeight: 600 }}>
                                     <Loader2 size={10} className="animate-spin" />
@@ -238,6 +239,11 @@ function OperacionesContent() {
                         </div>
                         <p className="page-title" style={{ fontSize: 'var(--font-size-2xl)' }}>Gestión integral de logística y cargas</p>
                     </div>
+                    <AIFeatureBadge 
+                        title="Priorización Inteligente" 
+                        description="Tess agrupa las cargas por urgencia cronológica, detecta cuellos de botella en la documentación y alerta proactivamente sobre operaciones que requieren atención inmediata." 
+                        position="bottom"
+                    />
                 </div>
                 <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
                     <Link href="/operaciones/nueva" className="btn btn-primary">

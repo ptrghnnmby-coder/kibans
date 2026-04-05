@@ -45,13 +45,13 @@ export function ChatSidebar() {
     const fetchHistory = async () => {
         if (!session?.user?.email) return
         try {
-            const res = await fetch(`/api/chat/team?chatId=marta@bot`)
+            const res = await fetch(`/api/chat/team?chatId=tess@bot`)
             if (res.ok) {
                 const data = await res.json()
                 const resolved = data.messages.map((m: any) => ({
                     ...m,
                     timestamp: new Date(m.timestamp),
-                    role: m.from === 'marta@bot' ? 'assistant' : 'user'
+                    role: m.from === 'tess@bot' ? 'assistant' : 'user'
                 }))
 
                 if (resolved.length > 0) {
@@ -79,7 +79,7 @@ export function ChatSidebar() {
         }
     }, [session, userName])
 
-    // Listen for open-marta-chat event (from briefing card)
+    // Listen for open-tess-chat event (from briefing card)
     useEffect(() => {
         const handleOpenChat = (e: Event) => {
             const msg = (e as CustomEvent).detail?.message
@@ -98,8 +98,8 @@ export function ChatSidebar() {
                 }, 150)
             }
         }
-        window.addEventListener('open-marta-chat', handleOpenChat)
-        return () => window.removeEventListener('open-marta-chat', handleOpenChat)
+        window.addEventListener('open-tess-chat', handleOpenChat)
+        return () => window.removeEventListener('open-tess-chat', handleOpenChat)
     }, [])
 
     // Removal of localStorage sync effect
@@ -150,7 +150,7 @@ export function ChatSidebar() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     id: userMessage.id.toString(),
-                    to: 'marta@bot',
+                    to: 'tess@bot',
                     content: userMessage.content,
                     timestamp: userMessage.timestamp.toISOString()
                 }),
@@ -237,7 +237,7 @@ export function ChatSidebar() {
             <button
                 onClick={() => setIsOpen(true)}
                 className="chat-toggle-btn"
-                title="Consultar a Marta"
+                title="Consultar a Tess"
                 style={{ background: 'var(--accent)', border: 'none', padding: 0 }}
             >
                 <div className="chat-avatar-small">
@@ -256,7 +256,7 @@ export function ChatSidebar() {
                         <div className="status-dot"></div>
                     </div>
                     <div>
-                        <h3>Marta</h3>
+                        <h3>Tess</h3>
                         <p>Asistente SMT</p>
                     </div>
                 </div>
@@ -294,7 +294,7 @@ export function ChatSidebar() {
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        placeholder="Consultale a Marta..."
+                        placeholder="Consultale a Tess..."
                         disabled={false}
                     />
                     <button type="submit" disabled={isLoading || !input.trim()}>

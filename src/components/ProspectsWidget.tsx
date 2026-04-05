@@ -7,6 +7,7 @@ import {
     Calendar, Building2, User, MessageCircle
 } from 'lucide-react'
 import { Contacto } from '@/lib/sheets-types'
+import { AIFeatureBadge } from '@/components/AIFeatureBadge'
 
 const SimpleCard = ({ children, className }: any) => (
     <div className={`card ${className}`} style={{
@@ -210,6 +211,11 @@ export function ProspectsWidget({ userName = 'Usuario', userEmail = '' }: { user
                     <Users size={18} color="var(--accent)" />
                     <h2 style={{ fontSize: '12px', fontWeight: 500, margin: 0, letterSpacing: '0.05em', color: 'var(--text-muted)' }}>PROSPECTOS CRM</h2>
                 </div>
+                <AIFeatureBadge 
+                    title="Extracción de Leads CRM" 
+                    description="Tess utiliza procesamiento de lenguaje natural (NLP) para convertir notas informales de Keep o WhatsApp en contactos estructurados en el CRM, identificando automáticamente la empresa, el contacto y el interés comercial." 
+                    position="bottom"
+                />
 
                 <div style={{ display: 'flex', gap: '8px' }}>
                     <SimpleButton size="sm" variant="secondary" onClick={() => setShowPasteModal(true)}>
@@ -319,7 +325,7 @@ export function ProspectsWidget({ userName = 'Usuario', userEmail = '' }: { user
                         </div>
                         <div style={{ padding: '16px' }}>
                             <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '12px' }}>
-                                Pega aquí tus notas de seguimiento. Marta extraerá los prospectos automáticamente.
+                                Pega aquí tus notas de seguimiento. Tess extraerá los prospectos automáticamente.
                             </p>
                             <textarea
                                 value={pasteValue}

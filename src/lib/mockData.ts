@@ -36,9 +36,9 @@ export const MOCK_FLETES: Flete[] = [
 export const MOCK_TEAM_MESSAGES: TeamMessage[] = [
     {
         id: 'msg-demo-1',
-        from: 'marta@bot',
+        from: 'tess@bot',
         to: 'demo@southmarinetrading.com',
-        content: 'Hi! I am Marta 🤖, your AI assistant. I am currently running in **Demo Mode**.\n\nYou can ask me about these demo operations, for example:\n- "What is the status of operation 25-0001?"\n- "Do we have any pending payments?"\n- "Show me info about GLOBAL FRUITS".',
+        content: 'Hi! I am Tess 🤖, your AI assistant. I am currently running in **Demo Mode**.\n\nYou can ask me about these demo operations, for example:\n- "What is the status of operation 25-0001?"\n- "Do we have any pending payments?"\n- "Show me info about GLOBAL FRUITS".',
         timestamp: new Date().toISOString()
     },
     {

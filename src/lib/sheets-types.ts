@@ -306,7 +306,7 @@ export interface QCInspection {
 
 export interface TeamMessage {
     id: string;
-    from: string; // User email or 'marta@bot'
+    from: string; // User email or 'tess@bot'
     to: string;   // Recipient email or 'group@southmarine'
     content: string;
     timestamp: string;

@@ -798,7 +798,7 @@ export function ContactForm({ initialData, onSubmit, isEditing = false, onSucces
                     <>
                         <h3 style={{ fontSize: 'var(--font-size-lg)', marginBottom: 'var(--space-4)', display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <Hash size={24} color="var(--blue)" />
-                            <span>Datos Marta & Categorías</span>
+                            <span>Datos Tess & Categorías</span>
                         </h3>
 
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-4)', marginBottom: 'var(--space-6)' }}>

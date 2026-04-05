@@ -29,7 +29,7 @@ export async function sendEmail({ to, cc, subject, html, attachments }: EmailOpt
         })
 
         const info = await transporter.sendMail({
-            from: `"Marta Operations" <${user}>`,
+            from: `"Tess Operations" <${user}>`,
             to,
             cc,
             subject,
@@ -79,7 +79,7 @@ export function getEmailTemplate(language: 'ES' | 'EN' | 'PT' = 'EN', piNumber: 
                 <p>Por favor, revisen los detalles y confirmen si todo es correcto.</p>
                 <br>
                 <p>Saludos cordiales,</p>
-                <p><strong>Marta Operations Team</strong></p>
+                <p><strong>Tess Operations Team</strong></p>
             </div>
         `,
         EN: `
@@ -89,7 +89,7 @@ export function getEmailTemplate(language: 'ES' | 'EN' | 'PT' = 'EN', piNumber: 
                 <p>Kindly review the details and confirm if everything is correct.</p>
                 <br>
                 <p>Best regards,</p>
-                <p><strong>Marta Operations Team</strong></p>
+                <p><strong>Tess Operations Team</strong></p>
             </div>
         `,
         PT: `
@@ -99,7 +99,7 @@ export function getEmailTemplate(language: 'ES' | 'EN' | 'PT' = 'EN', piNumber: 
                 <p>Por favor, revisem os detalhes e confirmem se está tudo correto.</p>
                 <br>
                 <p>Atenciosamente,</p>
-                <p><strong>Marta Operations Team</strong></p>
+                <p><strong>Tess Operations Team</strong></p>
             </div>
         `
     }

@@ -112,7 +112,7 @@ export default function DashboardPage() {
         fetchStats()
 
         // Load widget config
-        const saved = localStorage.getItem('marta_dashboard_widgets')
+        const saved = localStorage.getItem('tess_dashboard_widgets')
         if (saved) {
             setEnabledWidgets(JSON.parse(saved))
         }
@@ -121,7 +121,7 @@ export default function DashboardPage() {
     // Briefing diario — aparece una vez por día
     useEffect(() => {
         const today = new Date().toDateString()
-        const seen = localStorage.getItem('marta_briefing_date')
+        const seen = localStorage.getItem('tess_briefing_date')
         if (seen !== today) {
             const t = setTimeout(() => setShowBriefing(true), 2500)
             return () => clearTimeout(t)
@@ -130,18 +130,18 @@ export default function DashboardPage() {
 
     const handleOpenChat = () => {
         setShowBriefing(false)
-        localStorage.setItem('marta_briefing_date', new Date().toDateString())
+        localStorage.setItem('tess_briefing_date', new Date().toDateString())
         const msg = isDemo
             ? 'Buen día. Resumen del día: tenés 2 embarques en tránsito (25-0005 a Hamburgo, ETA 18/04 y 25-0010 a Yokohama, ETA 05/04). Las ops con Maersk y MSC llegaron sin novedades. Margen promedio de la semana: 14.8%.'
             : 'Buen día. Abrí el briefing para más detalles de tu operación.'
-        window.dispatchEvent(new CustomEvent('open-marta-chat', { detail: { message: msg } }))
+        window.dispatchEvent(new CustomEvent('open-tess-chat', { detail: { message: msg } }))
     }
 
     const userEmail = session?.user?.email?.toLowerCase()
     const isAdmin = userEmail === 'hm@southmarinetrading.com' ||
         userEmail === 'admin@southmarinetrading.com' ||
-        userEmail === 'marta@southmarinetrading.com' ||
-        session?.user?.name?.toLowerCase() === 'marta'
+        userEmail === 'tess@southmarinetrading.com' ||
+        session?.user?.name?.toLowerCase() === 'tess'
 
     if (loading) return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh' }}>
@@ -163,9 +163,14 @@ export default function DashboardPage() {
                         })()}
                     </div>
                     <div>
-                        <h1 className="label-marta">MARTA BOT • INTELIGENCIA OPERATIVA</h1>
+                        <h1 className="label-tess">MARTA BOT • INTELIGENCIA OPERATIVA</h1>
                         <p className="page-title">¡Hola, {name}! ¿Qué gestionamos hoy?</p>
                     </div>
+                    <AIFeatureBadge 
+                        title="Resumen Ejecutivo Diario" 
+                        description="Tess analiza riesgos, prioridades y métricas financieras en tiempo real para ofrecerte una visión consolidada del negocio apenas inicias tu día." 
+                        position="bottom"
+                    />
                 </div>
 
                 <div className="quick-actions">
@@ -351,7 +356,7 @@ export default function DashboardPage() {
                 </div>
             )}
 
-            {/* Marta Briefing Card */}
+            {/* Tess Briefing Card */}
             {showBriefing && (
                 <div style={{
                     position: 'fixed',
@@ -378,19 +383,19 @@ export default function DashboardPage() {
                         borderBottom: '1px solid rgba(220,166,75,0.2)',
                     }}>
                         <div style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', border: '2px solid rgba(220,166,75,0.5)', flexShrink: 0 }}>
-                            <img src="/tess_bot.png" alt="Marta" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src="/tess_bot.png" alt="Tess" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
                         <div style={{ flex: 1 }}>
-                            <div style={{ fontSize: '12px', fontWeight: 700, color: '#fff' }}>Marta · Briefing del día</div>
+                            <div style={{ fontSize: '12px', fontWeight: 700, color: '#fff' }}>Tess · Briefing del día</div>
                             <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)' }}>Análisis generado por IA</div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <AIFeatureBadge
                                 title="Briefing con IA"
-                                description="Marta analiza tus operaciones activas, márgenes y pagos pendientes para generar un resumen personalizado al inicio del día."
+                                description="Tess analiza tus operaciones activas, márgenes y pagos pendientes para generar un resumen personalizado al inicio del día."
                                 position="left"
                             />
-                            <button onClick={() => { setShowBriefing(false); localStorage.setItem('marta_briefing_date', new Date().toDateString()) }}
+                            <button onClick={() => { setShowBriefing(false); localStorage.setItem('tess_briefing_date', new Date().toDateString()) }}
                                 style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', padding: 0, display: 'flex' }}>
                                 <X size={15} />
                             </button>
@@ -416,7 +421,7 @@ export default function DashboardPage() {
                                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
                             }}
                         >
-                            <Sparkles size={14} fill="#000" /> Abrir chat con Marta
+                            <Sparkles size={14} fill="#000" /> Abrir chat con Tess
                         </button>
                     </div>
                     <style>{`

@@ -146,7 +146,7 @@ export default function QualityControlTab({ op, allContacts }: QualityControlTab
                 </div>
                 <div style={{ display: 'flex', gap: 'var(--space-3)', flexShrink: 0 }}>
                     <button
-                        onClick={() => showToast('Marta AI: "Estoy analizando las fotos del calibre 200/300. Generando borrador técnico..."', 'success')}
+                        onClick={() => showToast('Tess AI: "Estoy analizando las fotos del calibre 200/300. Generando borrador técnico..."', 'success')}
                         className="btn btn-secondary"
                         style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                     >
@@ -273,9 +273,9 @@ export default function QualityControlTab({ op, allContacts }: QualityControlTab
                                     <button
                                         className="btn btn-secondary"
                                         style={{ gridColumn: '1 / -1', fontSize: '12px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', color: 'var(--accent)', borderColor: 'rgba(99,102,241,0.25)' }}
-                                        onClick={() => showToast('Iniciando Marta AI para redactar el reporte...', 'success')}
+                                        onClick={() => showToast('Iniciando Tess AI para redactar el reporte...', 'success')}
                                     >
-                                        <Sparkles size={13} /> Redactar con Marta AI
+                                        <Sparkles size={13} /> Redactar con Tess AI
                                     </button>
                                 </div>
                             </div>

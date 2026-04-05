@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Ship, MapPin, AlertTriangle, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import { AIFeatureBadge } from '@/components/AIFeatureBadge'
 
 interface ShipmentStatus {
     opId: string
@@ -18,11 +19,11 @@ interface ShipmentStatus {
 // Map API statuses to display info using brand CSS variables
 const STATUS_META: Record<string, { label: string; varColor: string; dot: string }> = {
     DELAYED: { label: 'Demorada', varColor: 'var(--red)', dot: '#ef4444' },
-    LOADING: { label: 'En Carga', varColor: 'var(--orange)', dot: '#f97316' },
-    DEPARTED: { label: 'Zarpó', varColor: 'var(--accent)', dot: '#1a3b5c' },
-    IN_TRANSIT: { label: 'En Tránsito', varColor: 'var(--cyan)', dot: '#06b6d4' },
+    LOADING: { label: 'En Carga', varColor: 'var(--orange)', dot: '#f59e0b' },
+    DEPARTED: { label: 'Zarpó', varColor: 'var(--accent)', dot: '#dca64b' },
+    IN_TRANSIT: { label: 'En Tránsito', varColor: 'var(--accent)', dot: '#dca64b' },
     ARRIVED: { label: 'Llegó', varColor: 'var(--green)', dot: '#22c55e' },
-    UNKNOWN: { label: 'Sin datos', varColor: 'var(--text-dim)', dot: '#6b7280' },
+    UNKNOWN: { label: 'Sin datos', varColor: 'var(--text-dim)', dot: '#64748b' },
 }
 
 const STATUS_ORDER = ['DELAYED', 'LOADING', 'DEPARTED', 'IN_TRANSIT', 'ARRIVED', 'UNKNOWN']
@@ -110,8 +111,8 @@ export function ShipmentStatusWidget() {
 
     const summaryGroups = [
         { key: 'DELAYED', label: 'Demoradas', dot: '#ef4444', color: 'var(--red)' },
-        { key: 'LOADING', label: 'En Carga', dot: '#f97316', color: 'var(--orange)' },
-        { key: 'EN_VIAJE', label: 'En Viaje', dot: '#06b6d4', color: 'var(--cyan)' },
+        { key: 'LOADING', label: 'En Carga', dot: '#f59e0b', color: 'var(--orange)' },
+        { key: 'EN_VIAJE', label: 'En Viaje', dot: '#dca64b', color: 'var(--accent)' },
         { key: 'ARRIVED', label: 'Llegaron', dot: '#22c55e', color: 'var(--green)' },
         { key: 'UNKNOWN', label: 'Sin Información', dot: '#6b7280', color: 'var(--text-dim)' },
     ].filter(g => groupCounts[g.key] > 0)
@@ -124,6 +125,11 @@ export function ShipmentStatusWidget() {
                     <Ship size={17} color="var(--accent)" />
                     Estado de Cargas
                 </h2>
+                <AIFeatureBadge 
+                    title="Tracking Predictivo" 
+                    description="Tess monitorea el AIS de los buques y cruza datos con el historial de congestión en POL/POD para predecir retrasos antes que las navieras. El semáforo de prioridad se ajusta automáticamente según el riesgo detectado." 
+                    position="bottom"
+                />
                 <Link href="/operaciones" className="btn btn-secondary btn-small" style={{ fontSize: '11px' }}>
                     Ver todas <ChevronRight size={12} />
                 </Link>

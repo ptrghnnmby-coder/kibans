@@ -141,7 +141,7 @@ export default function ConfiguracionPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...suggestion,
-                    userEmail: session?.user?.email || 'usuario@martabot.io',
+                    userEmail: session?.user?.email || 'usuario@tessbot.io',
                     screenshotUrl
                 })
             })

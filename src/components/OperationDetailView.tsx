@@ -812,7 +812,7 @@ export default function OperationDetailView({ initialOp, allProducts, allContact
                 </div>
             )}
 
-            {/* Marta Anomaly Insight Banner */}
+            {/* Tess Anomaly Insight Banner */}
             {isDemo && DEMO_ANOMALIES[op.id || ''] && (
                 <div style={{
                     display: 'flex', alignItems: 'flex-start', gap: '10px',
@@ -824,14 +824,14 @@ export default function OperationDetailView({ initialOp, allProducts, allContact
                 }}>
                     <Sparkles size={15} color="#f59e0b" fill="#f59e0b" style={{ flexShrink: 0, marginTop: '1px' }} />
                     <div style={{ flex: 1 }}>
-                        <span style={{ fontSize: '11px', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Marta detectó un insight</span>
+                        <span style={{ fontSize: '11px', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Tess detectó un insight</span>
                         <p style={{ margin: '2px 0 0', fontSize: '12px', color: 'var(--text)', lineHeight: '1.55' }}>
                             {DEMO_ANOMALIES[op.id!]}
                         </p>
                     </div>
                     <AIFeatureBadge
                         title="Análisis de Anomalías"
-                        description="Marta compara el margen y flete de esta operación con operaciones históricas similares (mismo destino o exportador) para detectar desvíos significativos."
+                        description="Tess compara el margen y flete de esta operación con operaciones históricas similares (mismo destino o exportador) para detectar desvíos significativos."
                         position="left"
                         size="sm"
                     />

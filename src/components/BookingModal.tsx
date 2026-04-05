@@ -300,7 +300,7 @@ export default function BookingModal({ isOpen, onClose, operationId, forwarderNa
                         <div style={{
                             width: '96px',
                             height: '96px',
-                            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                            background: 'linear-gradient(135deg, var(--accent) 0%, #0f172a 100%)',
                             borderRadius: '28px',
                             display: 'flex',
                             alignItems: 'center',

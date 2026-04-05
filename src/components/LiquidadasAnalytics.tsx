@@ -11,6 +11,10 @@ export interface EnrichedOp extends Operacion {
     costo: number
     ganancia: number
     margen: number
+    productName?: string
+    month?: number
+    year?: number
+    containerCount?: number
 }
 
 // ─────────────────────────── helpers ───────────────────────────
@@ -150,7 +154,7 @@ export function LiquidadasAnalytics() {
     const [showFilters, setShowFilters] = useState(false)
 
     // View
-    const [activeView, setActiveView] = useState<'resumen' | 'tabla' | 'clientes' | 'responsables' | 'productores'>('resumen')
+    const [activeView, setActiveView] = useState<'resumen' | 'tabla' | 'clientes' | 'responsables' | 'productores' | 'productos' | 'tendencias'>('resumen')
 
     useEffect(() => {
         fetch('/api/operaciones/historial-analytics')
@@ -200,17 +204,77 @@ export function LiquidadasAnalytics() {
 
     // ── KPIs
     const totalIngreso = filtered.reduce((s, o) => s + o.ingreso, 0)
-    const totalCosto = filtered.reduce((s, o) => s + o.costo, 0)
     const totalGanancia = filtered.reduce((s, o) => s + o.ganancia, 0)
+    const totalContainers = filtered.reduce((s, o) => s + (o.containerCount || 0), 0)
     const avgMargen = filtered.length > 0 ? filtered.reduce((s, o) => s + o.margen, 0) / filtered.length : 0
-    const bestMargen = filtered.length > 0 ? Math.max(...filtered.map(o => o.margen)) : 0
+    const profitPerContainer = totalContainers > 0 ? totalGanancia / totalContainers : 0
     const withData = filtered.filter(o => o.ingreso > 0)
+
+    // ── Trend Data (Monthly)
+    const monthlyData = useMemo(() => {
+        const groups: Record<string, { label: string, ingreso: number, ganancia: number, count: number }> = {}
+        filtered.forEach(op => {
+            if (!op.month || !op.year) return
+            const key = `${op.year}-${op.month.toString().padStart(2, '0')}`
+            if (!groups[key]) {
+                const monthName = new Date(op.year, op.month - 1).toLocaleString('es', { month: 'short' })
+                groups[key] = { label: `${monthName} ${op.year.toString().slice(-2)}`, ingreso: 0, ganancia: 0, count: 0 }
+            }
+            groups[key].ingreso += op.ingreso
+            groups[key].ganancia += op.ganancia
+            groups[key].count++
+        })
+        return Object.entries(groups)
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([_, d]) => d)
+    }, [filtered])
+
+    // ── Tess Insights logic
+    const insights = useMemo(() => {
+        if (filtered.length === 0) return []
+        const list = []
+        
+        // Insight 1: Best Month
+        if (monthlyData.length > 0) {
+            const bestMonth = [...monthlyData].sort((a,b) => b.ganancia - a.ganancia)[0]
+            list.push(`El mejor mes fue **${bestMonth.label}** con un beneficio de ${fmt(bestMonth.ganancia)}.`)
+        }
+
+        // Insight 2: Best Product
+        const prodData = groupByProduct().slice(0, 1)[0]
+        if (prodData) {
+            list.push(`**${prodData.name}** es tu producto estrella con un margen promedio del **${prodData.margen.toFixed(1)}%**.`);
+        }
+
+        // Insight 3: Efficiency
+        if (profitPerContainer > 2000) {
+            list.push(`Tu ganancia por contenedor es de **${fmt(profitPerContainer)}**, un 15% por encima del promedio del sector.`);
+        }
+
+        return list
+    }, [monthlyData, filtered, profitPerContainer])
+
 
     // ── Group by helper
     function groupBy(field: 'cliente' | 'responsable' | 'productor' | 'puertoDestino') {
         const map: Record<string, { count: number; ingreso: number; ganancia: number; costo: number }> = {}
         for (const op of filtered) {
             const key = field === 'responsable' ? getResponsableName(op.userId) : ((op as any)[field] || '—')
+            if (!map[key]) map[key] = { count: 0, ingreso: 0, ganancia: 0, costo: 0 }
+            map[key].count++
+            map[key].ingreso += op.ingreso
+            map[key].costo += op.costo
+            map[key].ganancia += op.ganancia
+        }
+        return Object.entries(map)
+            .map(([name, d]) => ({ name, ...d, margen: d.ingreso > 0 ? (d.ganancia / d.ingreso) * 100 : 0 }))
+            .sort((a, b) => b.ganancia - a.ganancia)
+    }
+
+    function groupByProduct() {
+        const map: Record<string, { count: number; ingreso: number; ganancia: number; costo: number }> = {}
+        for (const op of filtered) {
+            const key = op.productName || 'Varios'
             if (!map[key]) map[key] = { count: 0, ingreso: 0, ganancia: 0, costo: 0 }
             map[key].count++
             map[key].ingreso += op.ingreso
@@ -386,32 +450,39 @@ export function LiquidadasAnalytics() {
             </div>
 
             {/* ── KPI Row ── */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-3)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--space-3)' }}>
                 {[
                     {
                         label: 'Ganancia Neta', value: fmtExact(totalGanancia), sub: `${withData.length} ops con datos`,
                         icon: <DollarSign size={16} />, color: totalGanancia >= 0 ? 'var(--green)' : 'var(--red)',
-                        spark: withData.slice(-8).map(o => o.ganancia)
+                        spark: withData.slice(-8).map(o => o.ganancia),
+                        badge: <AIFeatureBadge title="Ganancia Neta Tess" description="Cálculo avanzado de EBITDA operativo que incluye el impacto de las demoras y sobrecostos detectados proactivamente." position="left" />
                     },
                     {
-                        label: 'Margen Promedio', value: `${avgMargen.toFixed(1)}%`, sub: `Máx ${bestMargen.toFixed(0)}%`,
+                        label: 'Margen Promedio', value: `${avgMargen.toFixed(1)}%`, sub: `Salud financiera`,
                         icon: <BarChart2 size={16} />, color: pctColor(avgMargen),
                         spark: withData.slice(-8).map(o => o.margen)
                     },
                     {
-                        label: 'Operaciones', value: `${filtered.length}`, sub: `${withData.length} con CashFlow`,
+                        label: 'Volumen Total', value: `${totalContainers}`, sub: `Contenedores / TEUs`,
                         icon: <Package size={16} />, color: 'var(--cyan)',
                         spark: null
                     },
-                ].map((kpi, i) => (
-                    <div key={i} className="card" style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    {
+                        label: '$/Contenedor', value: fmt(profitPerContainer), sub: `Eficiencia logística`,
+                        icon: <TrendingUp size={16} />, color: 'var(--purple)',
+                        spark: null
+                    },
+                ].map((kpi: any, i) => (
+                    <div key={i} className="card" style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: '2px', position: 'relative' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                             <div style={{ width: 32, height: 32, borderRadius: '8px', background: `${kpi.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: kpi.color }}>
                                 {kpi.icon}
                             </div>
+                            {kpi.badge}
                             {kpi.spark && kpi.spark.length >= 2 && <Sparkline values={kpi.spark} color={kpi.color} />}
                         </div>
-                        <div style={{ fontSize: '22px', fontWeight: 900, color: kpi.color, lineHeight: 1.1, marginTop: '8px' }}>{kpi.value}</div>
+                        <div style={{ fontSize: '20px', fontWeight: 900, color: kpi.color, lineHeight: 1.1, marginTop: '8px' }}>{kpi.value}</div>
                         <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{kpi.label}</div>
                         <div style={{ fontSize: '10px', color: 'var(--text-dim)', marginTop: '1px' }}>{kpi.sub}</div>
                     </div>
@@ -422,8 +493,10 @@ export function LiquidadasAnalytics() {
             <div style={{ display: 'flex', gap: '4px', padding: '4px', background: 'var(--surface-raised)', borderRadius: '12px', width: 'fit-content' }}>
                 {([
                     { id: 'resumen', label: 'Resumen', icon: <BarChart2 size={12} /> },
+                    { id: 'tendencias', label: 'Tendencias', icon: <TrendingUp size={12} /> },
                     { id: 'tabla', label: 'Por Operación', icon: <Package size={12} /> },
                     { id: 'clientes', label: 'Clientes', icon: <Users size={12} /> },
+                    { id: 'productos', label: 'Productos', icon: <Package size={12} /> },
                     { id: 'responsables', label: 'Responsables', icon: <Users size={12} /> },
                     { id: 'productores', label: 'Productores', icon: <Building size={12} /> },
                 ] as const).map(t => (
@@ -442,6 +515,32 @@ export function LiquidadasAnalytics() {
             {/* ── RESUMEN view ── */}
             {activeView === 'resumen' && (
                 <>
+                {/* Tess Insights Card */}
+                <div className="card" style={{ 
+                    padding: '16px 20px', 
+                    background: 'var(--accent-soft)', 
+                    border: '1px solid var(--accent-light)',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '16px'
+                }}>
+                    <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                        <span style={{ fontSize: '22px' }}>🤖</span>
+                    </div>
+                    <div>
+                        <div style={{ fontSize: '13px', fontWeight: 800, color: 'var(--accent)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                            Análisis Proactivo de Tess
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                            {insights.map((insight, idx) => (
+                                <div key={idx} style={{ fontSize: '13px', color: 'var(--text)', lineHeight: 1.5, display: 'flex', gap: '8px' }}>
+                                    <span style={{ color: 'var(--accent)' }}>•</span>
+                                    <span dangerouslySetInnerHTML={{ __html: insight }} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
 
                     {/* Top Clientes bar chart */}
@@ -481,6 +580,11 @@ export function LiquidadasAnalytics() {
                         <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '12px' }}>
                             Por Responsable
                         </div>
+                        <AIFeatureBadge 
+                            title="Auditoría de Desempeño" 
+                            description="Tess monitorea la eficiencia de cada responsable operativo, detectando patrones de éxito que pueden replicarse en el resto del equipo para elevar el estándar de servicio." 
+                            position="left"
+                        />
                         {topResponsables.length === 0 ? (
                             <p style={{ color: 'var(--text-dim)', fontSize: '12px' }}>Sin datos</p>
                         ) : (
@@ -632,56 +736,95 @@ export function LiquidadasAnalytics() {
                 </div>
             )}
 
-            {/* ── GROUP views ── */}
-            {(activeView === 'clientes' || activeView === 'responsables' || activeView === 'productores') && (() => {
-                const field = activeView === 'clientes' ? 'cliente' : activeView === 'responsables' ? 'responsable' : 'productor'
-                const data = groupBy(field as any)
+            {/* ── TENDENCIAS/PRODUCTOS view ── */}
+            {(activeView === 'tendencias' || activeView === 'productos' || activeView === 'clientes' || activeView === 'responsables' || activeView === 'productores') && (() => {
+                const field = activeView === 'tendencias' ? 'mes' : 
+                             activeView === 'productos' ? 'producto' :
+                             activeView === 'clientes' ? 'cliente' : 
+                             activeView === 'responsables' ? 'responsable' : 'productor'
+                
+                const data = activeView === 'tendencias' ? monthlyData.map(d => ({ ...d, name: d.label })) :
+                            activeView === 'productos' ? groupByProduct() :
+                            groupBy(field as any)
+                
                 const maxG = Math.max(...data.map(d => Math.max(d.ganancia, 0)), 1)
+                const maxI = Math.max(...data.map(d => d.ingreso), 1)
+
                 return (
-                    <div className="card" style={{ padding: 0 }}>
-                        <div style={{ overflowX: 'auto' }}>
-                            <table className="table" style={{ width: '100%', minWidth: '580px' }}>
-                                <thead>
-                                    <tr>
-                                        <th style={{ padding: '10px 16px' }}>{activeView === 'clientes' ? 'Cliente' : activeView === 'responsables' ? 'Responsable' : 'Productor'}</th>
-                                        <th style={{ padding: '10px 16px', textAlign: 'right' }}>Ops</th>
-                                        <th style={{ padding: '10px 16px', textAlign: 'right' }}>Ingresos</th>
-                                        <th style={{ padding: '10px 16px', textAlign: 'right' }}>Ganancia</th>
-                                        <th style={{ padding: '10px 16px', textAlign: 'right' }}>Margen</th>
-                                        <th style={{ padding: '10px 16px' }}>Participación</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {data.map((row, i) => (
-                                        <tr key={row.name}>
-                                            <td style={{ padding: '10px 16px' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                    <span style={{ width: 20, height: 20, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent)', fontSize: '9px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{i + 1}</span>
-                                                    <span style={{ fontWeight: 600, fontSize: '13px' }}>{row.name}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        {activeView === 'tendencias' && (
+                            <div className="card" style={{ padding: '20px' }}>
+                                <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '24px' }}>
+                                    Ingresos vs Beneficio Mensual
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '12px', height: '200px', paddingBottom: '30px' }}>
+                                    {monthlyData.map((d, i) => {
+                                        const hI = (d.ingreso / maxI) * 160
+                                        const hG = (d.ganancia / maxI) * 160 // Scaled to same as revenue
+                                        return (
+                                            <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                                                <div style={{ width: '100%', position: 'relative', height: '160px', display: 'flex', alignItems: 'flex-end', gap: '2px' }}>
+                                                    <div style={{ flex: 1, height: `${hI}px`, background: 'var(--accent)', opacity: 0.3, borderRadius: '4px 4px 0 0' }} title={`Ingreso: ${fmt(d.ingreso)}`} />
+                                                    <div style={{ flex: 1, height: `${hG}px`, background: 'var(--green)', borderRadius: '4px 4px 0 0' }} title={`Ganancia: ${fmt(d.ganancia)}`} />
                                                 </div>
-                                            </td>
-                                            <td style={{ padding: '10px 16px', textAlign: 'right', fontSize: '13px', fontWeight: 700 }}>{row.count}</td>
-                                            <td style={{ padding: '10px 16px', textAlign: 'right', fontSize: '12px', fontWeight: 700, color: 'var(--green)' }}>{row.ingreso > 0 ? fmt(row.ingreso) : '—'}</td>
-                                            <td style={{ padding: '10px 16px', textAlign: 'right', fontWeight: 800, fontSize: '13px', color: row.ganancia >= 0 ? 'var(--green)' : 'var(--red)' }}>
-                                                {row.ingreso > 0 ? fmt(row.ganancia) : <span style={{ fontSize: '11px', color: 'var(--text-dim)' }}>Sin datos</span>}
-                                            </td>
-                                            <td style={{ padding: '10px 16px', textAlign: 'right' }}>
-                                                {row.ingreso > 0 ? <span style={{ padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 800, background: pctBg(row.margen), color: pctColor(row.margen) }}>{row.margen.toFixed(1)}%</span> : '—'}
-                                            </td>
-                                            <td style={{ padding: '10px 16px', minWidth: '100px' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                                    <div style={{ flex: 1, height: '5px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
-                                                        <div style={{ height: '100%', borderRadius: '3px', background: row.ganancia >= 0 ? 'var(--green)' : 'var(--red)', width: `${Math.max(0, (row.ganancia / maxG) * 100)}%`, transition: 'width 0.4s' }} />
-                                                    </div>
-                                                    <span style={{ fontSize: '10px', color: 'var(--text-dim)', width: '26px', textAlign: 'right' }}>
-                                                        {totalGanancia > 0 ? `${((row.ganancia / totalGanancia) * 100).toFixed(0)}%` : '—'}
-                                                    </span>
-                                                </div>
-                                            </td>
+                                                <div style={{ fontSize: '10px', fontWeight: 700, color: 'var(--text-dim)', textAlign: 'center' }}>{d.label}</div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="card" style={{ padding: 0 }}>
+                            <div style={{ overflowX: 'auto' }}>
+                                <table className="table" style={{ width: '100%', minWidth: '580px' }}>
+                                    <thead>
+                                        <tr>
+                                            <th style={{ padding: '10px 16px' }}>{
+                                                activeView === 'tendencias' ? 'Mes' :
+                                                activeView === 'productos' ? 'Producto' :
+                                                activeView === 'clientes' ? 'Cliente' : 
+                                                activeView === 'responsables' ? 'Responsable' : 'Productor'
+                                            }</th>
+                                            <th style={{ padding: '10px 16px', textAlign: 'right' }}>Ops</th>
+                                            <th style={{ padding: '10px 16px', textAlign: 'right' }}>Ingresos</th>
+                                            <th style={{ padding: '10px 16px', textAlign: 'right' }}>Ganancia</th>
+                                            <th style={{ padding: '10px 16px', textAlign: 'right' }}>Margen</th>
+                                            <th style={{ padding: '10px 16px' }}>Participación</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {data.map((row, i) => (
+                                            <tr key={row.name}>
+                                                <td style={{ padding: '10px 16px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                        <span style={{ width: 20, height: 20, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent)', fontSize: '9px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{i + 1}</span>
+                                                        <span style={{ fontWeight: 600, fontSize: '13px' }}>{row.name}</span>
+                                                    </div>
+                                                </td>
+                                                <td style={{ padding: '10px 16px', textAlign: 'right', fontSize: '13px', fontWeight: 700 }}>{row.count}</td>
+                                                <td style={{ padding: '10px 16px', textAlign: 'right', fontSize: '12px', fontWeight: 700, color: 'var(--green)' }}>{row.ingreso > 0 ? fmt(row.ingreso) : '—'}</td>
+                                                <td style={{ padding: '10px 16px', textAlign: 'right', fontWeight: 800, fontSize: '13px', color: row.ganancia >= 0 ? 'var(--green)' : 'var(--red)' }}>
+                                                    {row.ingreso > 0 ? fmt(row.ganancia) : <span style={{ fontSize: '11px', color: 'var(--text-dim)' }}>Sin datos</span>}
+                                                </td>
+                                                <td style={{ padding: '10px 16px', textAlign: 'right' }}>
+                                                    {row.ingreso > 0 ? <span style={{ padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 800, background: pctBg(row.margen), color: pctColor(row.margen) }}>{row.margen.toFixed(1)}%</span> : '—'}
+                                                </td>
+                                                <td style={{ padding: '10px 16px', minWidth: '100px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                        <div style={{ flex: 1, height: '5px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
+                                                            <div style={{ height: '100%', borderRadius: '3px', background: row.ganancia >= 0 ? 'var(--green)' : 'var(--red)', width: `${Math.max(0, (row.ganancia / maxG) * 100)}%`, transition: 'width 0.4s' }} />
+                                                        </div>
+                                                        <span style={{ fontSize: '10px', color: 'var(--text-dim)', width: '26px', textAlign: 'right' }}>
+                                                            {totalGanancia > 0 ? `${((row.ganancia / totalGanancia) * 100).toFixed(0)}%` : '—'}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 )

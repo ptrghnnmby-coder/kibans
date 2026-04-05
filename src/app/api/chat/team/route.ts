@@ -24,8 +24,8 @@ export async function GET(req: Request) {
         if (isDemo) {
             const { MOCK_TEAM_MESSAGES } = await import('@/lib/mockData')
             let messages = MOCK_TEAM_MESSAGES;
-            if (chatId !== 'marta@bot') {
-                 // For other users, maybe just empty or filter. We'll return empty for non marta so it's clean, or the mock ones that fit.
+            if (chatId !== 'tess@bot') {
+                 // For other users, maybe just empty or filter. We'll return empty for non tess so it's clean, or the mock ones that fit.
                  messages = messages.filter(m => m.from === chatId || m.to === chatId)
             }
             return NextResponse.json({ messages })

@@ -10,6 +10,7 @@ import {
     ExternalLink, RotateCcw, ArrowRight
 } from 'lucide-react'
 import { ShipTrackingTimeline } from '@/components/ShipTrackingTimeline'
+import { AIFeatureBadge } from '@/components/AIFeatureBadge'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -52,10 +53,10 @@ function getDaysRemaining(eta?: string, etd?: string) {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; border: string; dot: string; trackStatus: string }> = {
-    IN_TRANSIT: { label: 'En Tránsito', color: '#38bdf8', bg: 'rgba(56,189,248,0.12)', border: 'rgba(56,189,248,0.3)', dot: '#38bdf8', trackStatus: 'IN_TRANSIT' },
+    IN_TRANSIT: { label: 'En Tránsito', color: '#dca64b', bg: 'rgba(220,166,75,0.12)', border: 'rgba(220,166,75,0.3)', dot: '#dca64b', trackStatus: 'IN_TRANSIT' },
     ARRIVED:    { label: 'Llegó al destino', color: '#22c55e', bg: 'rgba(34,197,94,0.12)', border: 'rgba(34,197,94,0.3)', dot: '#22c55e', trackStatus: 'ARRIVED' },
     DELAYED:    { label: 'Demorado', color: '#ef4444', bg: 'rgba(239,68,68,0.12)', border: 'rgba(239,68,68,0.3)', dot: '#ef4444', trackStatus: 'DELAYED' },
-    DEPARTED:   { label: 'Zarpó', color: '#38bdf8', bg: 'rgba(56,189,248,0.12)', border: 'rgba(56,189,248,0.3)', dot: '#38bdf8', trackStatus: 'DEPARTED' },
+    DEPARTED:   { label: 'Zarpó', color: '#dca64b', bg: 'rgba(220,166,75,0.12)', border: 'rgba(220,166,75,0.3)', dot: '#dca64b', trackStatus: 'DEPARTED' },
     LOADING:    { label: 'En Carga', color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.3)', dot: '#f59e0b', trackStatus: 'LOADING' },
     UNKNOWN:    { label: 'Sin Datos', color: '#64748b', bg: 'rgba(100,116,139,0.12)', border: 'rgba(100,116,139,0.3)', dot: '#64748b', trackStatus: 'EMPTY' },
 }
@@ -128,6 +129,11 @@ export default function TrackingPage() {
                             Seguimiento visual de tus embarques activos
                         </p>
                     </div>
+                    <AIFeatureBadge 
+                        title="Predicción de Arribo" 
+                        description="Tess analiza el historial de rutas, congestión portuaria en tiempo real y patrones de navegación para predecir el ETA con una precisión superior a la de las navieras." 
+                        position="bottom"
+                    />
                     <button
                         onClick={() => load(true)}
                         disabled={refreshing}
@@ -143,7 +149,7 @@ export default function TrackingPage() {
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center', paddingBottom: '14px' }}>
                     {[
                         { key: 'all',        label: `Todos (${stats.total})`,          color: 'var(--text-muted)' },
-                        { key: 'IN_TRANSIT', label: `🚢 En Tránsito (${stats.inTransit})`, color: '#38bdf8' },
+                        { key: 'IN_TRANSIT', label: `🚢 En Tránsito (${stats.inTransit})`, color: '#dca64b' },
                         { key: 'ARRIVED',    label: `✅ Llegados (${stats.arrived})`,   color: '#22c55e' },
                         { key: 'DELAYED',    label: `⚠️ Demorados (${stats.delayed})`,  color: '#ef4444' },
                     ].map(tab => (
@@ -271,7 +277,7 @@ function TrackingCard({ row, isExpanded, onToggle, onNavigate }: {
                         </span>
                     </div>
                     <div style={{ height: '4px', background: 'var(--surface-raised)', borderRadius: '2px', overflow: 'hidden' }}>
-                        <div style={{ height: '100%', width: `${pct}%`, borderRadius: '2px', background: isLate ? '#ef4444' : pct > 80 ? '#f59e0b' : '#38bdf8', transition: 'width 0.5s ease' }} />
+                        <div style={{ height: '100%', width: `${pct}%`, borderRadius: '2px', background: isLate ? '#ef4444' : pct > 80 ? '#f59e0b' : '#dca64b', transition: 'width 0.5s ease' }} />
                     </div>
                 </div>
 

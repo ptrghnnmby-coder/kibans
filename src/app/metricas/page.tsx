@@ -9,7 +9,7 @@ export default function MetricasPage() {
         <div className="dashboard-container animate-in">
             <header className="dashboard-header" style={{ marginBottom: 'var(--space-6)' }}>
                 <div>
-                    <h1 className="label-marta" style={{ marginBottom: '4px' }}>Métricas</h1>
+                    <h1 className="label-tess" style={{ marginBottom: '4px' }}>Métricas</h1>
                     <p className="page-title" style={{ fontSize: 'var(--font-size-2xl)' }}>Análisis de rendimiento y rentabilidad</p>
                 </div>
             </header>
